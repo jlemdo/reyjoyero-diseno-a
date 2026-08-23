@@ -58,13 +58,18 @@
   --glow:        rgba(201,139,107,.28);
 }
 
+:root {
+  --font-display: 'Bitter','Zilla Slab','Rockwell','Palatino Linotype','Book Antiqua',Palatino,serif;
+  --font-body:    'Barlow','Roboto Condensed','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+
 *,*::before,*::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
-  font-family: 'Barlow', 'Roboto Condensed', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -73,7 +78,7 @@ body {
 }
 
 h1,h2,h3,.display {
-  font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  font-family: var(--font-display);
   font-weight: 600;
   text-wrap: balance;
   margin: 0;
@@ -90,39 +95,67 @@ h1,h2,h3,.display {
 
 .wrap { width: min(1280px, 92vw); margin-inline: auto; }
 
-/* ═══════════ SELECTOR DE PALETAS ═══════════ */
-.palette-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
-  padding: .6rem 1rem;
-  background: rgba(0,0,0,.82);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
+/* ═══════════ BARRA DE CONTROL (preview) ═══════════ */
+.ctl {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: #000; border-bottom: 1px solid rgba(255,255,255,.14);
+  font-family: 'Barlow','Segoe UI',system-ui,sans-serif;
 }
-.palette-bar__label {
-  font-size: .6rem; letter-spacing: .28em; text-transform: uppercase;
-  color: var(--ink-mute);
+.ctl__in {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.6rem; padding: .5rem 1rem; flex-wrap: wrap;
 }
-.swatches { display: flex; gap: .55rem; }
-.swatch {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.28);
-  cursor: pointer; padding: 0; position: relative;
-  transition: transform .25s, box-shadow .25s;
+.ctl__grp { display: flex; align-items: center; gap: .55rem; }
+.ctl__lab {
+  font-size: .68rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: #8a8a8a; white-space: nowrap;
 }
-.swatch:hover { transform: scale(1.12); }
-.swatch[aria-pressed="true"] {
-  box-shadow: 0 0 0 2px var(--ground), 0 0 0 3px currentColor;
-  transform: scale(1.1);
+.ctl__sep { width: 1px; height: 22px; background: rgba(255,255,255,.16); }
+
+.ctl__pages { display: flex; gap: 2px; background: rgba(255,255,255,.07); padding: 2px; }
+.ctl__pages button {
+  padding: .5rem 1.1rem; border: 0; background: transparent; color: #b9b9b9;
+  font-family: inherit; font-size: .74rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; cursor: pointer;
+  transition: background .18s, color .18s; white-space: nowrap;
 }
-.swatch:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.sw-oro   { background: linear-gradient(135deg,#0d0d0d 0 50%,#c9a227 50% 100%); color:#c9a227; }
-.sw-onix  { background: linear-gradient(135deg,#101216 0 50%,#d4c9a8 50% 100%); color:#d4c9a8; }
-.sw-cacao { background: linear-gradient(135deg,#17100e 0 50%,#c98b6b 50% 100%); color:#c98b6b; }
-.palette-name {
-  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--accent); min-width: 140px;
+.ctl__pages button:hover { color: #fff; }
+.ctl__pages button[aria-pressed="true"] { background: var(--accent); color: #000; }
+.ctl__pages button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+.ctl__sw { display: flex; gap: .4rem; }
+.ctl__sw button {
+  width: 28px; height: 28px; padding: 0; cursor: pointer;
+  border: 2px solid rgba(255,255,255,.25); border-radius: 50%;
+  transition: transform .18s, border-color .18s;
+}
+.ctl__sw button:hover { transform: scale(1.12); }
+.ctl__sw button[aria-pressed="true"] { border-color: currentColor; transform: scale(1.12); }
+.ctl__sw button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.p-oro   { background: linear-gradient(135deg,#0d0d0d 50%,#c9a227 50%); color:#c9a227; }
+.p-onix  { background: linear-gradient(135deg,#101216 50%,#d4c9a8 50%); color:#d4c9a8; }
+.p-cacao { background: linear-gradient(135deg,#17100e 50%,#c98b6b 50%); color:#c98b6b; }
+
+.ctl__fonts { display: flex; gap: 2px; background: rgba(255,255,255,.07); padding: 2px; }
+.ctl__fonts button {
+  padding: .45rem .85rem; border: 0; background: transparent; color: #b9b9b9;
+  font-size: .8rem; cursor: pointer; transition: background .18s, color .18s; white-space: nowrap;
+}
+.ctl__fonts button:hover { color: #fff; }
+.ctl__fonts button[aria-pressed="true"] { background: rgba(255,255,255,.92); color: #000; }
+.ctl__fonts button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+@media (max-width: 900px) {
+  .ctl__in { gap: .9rem; padding: .45rem .6rem; }
+  .ctl__sep, .ctl__lab { display: none; }
+  .ctl__pages button { padding: .45rem .8rem; font-size: .7rem; letter-spacing: .08em; }
+  .ctl__fonts button { padding: .4rem .6rem; font-size: .74rem; }
+  .ctl__sw button { width: 25px; height: 25px; }
+}
+@media (max-width: 560px) {
+  .ctl__in { gap: .7rem; }
+  .ctl__pages { width: 100%; justify-content: center; order: -1; }
+  .ctl__pages button { flex: 1; padding: .5rem .3rem; font-size: .68rem; }
 }
 
 /* ═══════════ ANUNCIO ═══════════ */
@@ -144,7 +177,7 @@ h1,h2,h3,.display {
 .nav a { color: var(--ink); text-decoration: none; opacity: .82; transition: color .2s, opacity .2s; white-space: nowrap; }
 .nav a:hover { color: var(--accent); opacity: 1; }
 .brand {
-  font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  font-family: var(--font-display);
   font-size: 1.35rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
   text-align: center; color: var(--ink); white-space: nowrap;
 }
@@ -194,7 +227,7 @@ h1,h2,h3,.display {
   background: var(--ground); border: 1px solid var(--line);
   padding: .9rem 1.4rem;
 }
-.hero__tag strong { display: block; font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif; font-weight: 700; font-size: 1.5rem; color: var(--accent); }
+.hero__tag strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--accent); }
 .hero__tag span { font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
 
 /* ═══════════ BARRA DE CONFIANZA ═══════════ */
@@ -245,7 +278,7 @@ section { padding: 6rem 0; }
 .tabnav { display:flex; justify-content:center; gap:2.4rem; border-bottom:1px solid var(--line-soft); margin-bottom:2.6rem; flex-wrap:wrap; }
 .tabnav button {
   background:none; border:0; border-bottom:2px solid transparent; color:var(--ink-mute);
-  font-family:'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif; font-size:1.5rem; padding:0 0 .8rem; cursor:pointer; transition:.25s;
+  font-family:var(--font-display); font-size:1.5rem; padding:0 0 .8rem; cursor:pointer; transition:.25s;
 }
 .tabnav button:hover { color:var(--ink); }
 .tabnav button[aria-pressed="true"] { color:var(--accent); border-bottom-color:var(--accent); }
@@ -292,7 +325,7 @@ section { padding: 6rem 0; }
 .editorial__text p { color: #57503f; max-width: 44ch; }
 .editorial__list { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; gap: .9rem; }
 .editorial__list li { display: flex; gap: .8rem; align-items: flex-start; font-size: .92rem; }
-.editorial__list b { color: var(--accent-deep); font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif; font-size: 1.1rem; }
+.editorial__list b { color: var(--accent-deep); font-family: var(--font-display); font-size: 1.1rem; }
 
 /* ═══════════ PRODUCTO ═══════════ */
 .pdp { display: grid; grid-template-columns: 1.15fr .85fr; gap: 4rem; padding-top: 3.5rem; }
@@ -306,7 +339,7 @@ section { padding: 6rem 0; }
 .pdp__rating { display: flex; align-items: center; gap: .6rem; color: var(--accent); font-size: .84rem; }
 .pdp__rating span { color: var(--ink-mute); }
 .pdp__price { display: flex; align-items: baseline; gap: .9rem; margin: 1.5rem 0; font-variant-numeric: tabular-nums; }
-.pdp__price b { font-size: 2.1rem; color: var(--accent); font-weight: 500; font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif; }
+.pdp__price b { font-size: 2.1rem; color: var(--accent); font-weight: 500; font-family: var(--font-display); }
 .pdp__price s { color: var(--ink-mute); }
 .pdp__price em { font-style: normal; background: var(--sale); color:#12100c; font-size: .66rem; letter-spacing:.1em; padding: .25rem .6rem; font-weight: 700; }
 .opt-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); margin: 1.6rem 0 .7rem; }
@@ -360,7 +393,7 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
 .foot-grid ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
 .foot-grid a { color: var(--ink-mute); text-decoration: none; font-size: .88rem; }
 .foot-grid a:hover { color: var(--accent); }
-.foot-brand { font-family: 'Bitter', 'Zilla Slab', 'Rockwell', 'Palatino Linotype', 'Book Antiqua', Palatino, serif; font-size: 1.4rem; letter-spacing: .28em; text-transform: uppercase; margin-bottom: 1rem; }
+.foot-brand { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .28em; text-transform: uppercase; margin-bottom: 1rem; }
 .foot-brand span { color: var(--accent); }
 .wa { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent) !important; font-weight: 600; }
 .foot-bottom {
@@ -368,21 +401,6 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
   font-size: .78rem; color: var(--ink-mute);
 }
-
-/* ═══════════ TABS DE PÁGINA ═══════════ */
-.pagetabs {
-  position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 998;
-  display: flex; gap: .3rem; padding: .35rem;
-  background: rgba(0,0,0,.86); backdrop-filter: blur(14px);
-  border: 1px solid var(--line); border-radius: 100px;
-}
-.pagetabs button {
-  padding: .6rem 1.4rem; border: 0; background: transparent; color: var(--ink-mute);
-  font-family: inherit; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
-  cursor: pointer; border-radius: 100px; transition: .25s;
-}
-.pagetabs button:hover { color: var(--ink); }
-.pagetabs button[aria-pressed="true"] { background: var(--accent); color: #0d0d0d; font-weight: 600; }
 
 .page { display: none; }
 .page.on { display: block; }
@@ -429,9 +447,6 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
 /* Movil */
 @media (max-width: 620px) {
   .wrap { width: 92vw; }
-  .palette-bar { gap: .8rem; padding: .5rem .6rem; }
-  .palette-name { min-width: 0; font-size: .6rem; }
-  .swatch { width: 30px; height: 30px; }
   .announce { margin-top: 46px; }
   .cats { grid-template-columns: 1fr; }
   .ugc-strip { grid-template-columns: repeat(2,1fr); }
@@ -447,7 +462,6 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
   .sec-head h2 { font-size: 1.9rem; }
   section { padding: 3rem 0; }
   .editorial__text { padding: 2rem 1.5rem; }
-  .pagetabs button { padding: .55rem .9rem; font-size: .64rem; letter-spacing: .1em; }
   .coll-bar { flex-direction: column; align-items: flex-start; }
 }
 
@@ -457,25 +471,18 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
   .ugc-strip { grid-template-columns: repeat(2,1fr); }
   .brand { font-size: 1.05rem; letter-spacing: .12em; }
   .hero h1 { font-size: 2.6rem; }
-  .pagetabs { width: 94vw; justify-content: center; }
-  .pagetabs button { padding: .5rem .7rem; font-size: .6rem; }
 }
 
 
 /* Legibilidad minima en movil: nada de texto bajo 10px */
 @media (max-width: 620px) {
   .card__badge { font-size: .70rem; padding: .3rem .6rem; }
-  .palette-bar__label, .palette-name { font-size: .66rem; }
-  .pagetabs button { font-size: .68rem; }
   .card__stars { font-size: .76rem; }
   .trust small { font-size: .78rem; }
   .cat__label span { font-size: .70rem; }
   .eyebrow { font-size: .70rem; letter-spacing: .22em; }
 }
 @media (max-width: 400px) {
-  .pagetabs button { font-size: .66rem; padding: .5rem .6rem; }
-  .palette-bar__label { display: none; }
-  .palette-name { font-size: .66rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -484,15 +491,33 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
 
 </style>
 
-<!-- ══════════ SELECTOR DE PALETAS ══════════ -->
-<div class="palette-bar">
-  <span class="palette-bar__label">Paleta</span>
-  <div class="swatches">
-    <button class="swatch sw-oro"   data-p="oro"   aria-pressed="true"  aria-label="Paleta Oro Real"></button>
-    <button class="swatch sw-onix"  data-p="onix"  aria-pressed="false" aria-label="Paleta Ónix y Champagne"></button>
-    <button class="swatch sw-cacao" data-p="cacao" aria-pressed="false" aria-label="Paleta Cacao y Oro Rosa"></button>
+<!-- ══════════ BARRA DE CONTROL ══════════ -->
+<div class="ctl">
+  <div class="ctl__in">
+    <div class="ctl__pages">
+      <button data-page="p-home" aria-pressed="true">Home</button>
+      <button data-page="p-prod" aria-pressed="false">Producto</button>
+      <button data-page="p-coll" aria-pressed="false">Colección</button>
+    </div>
+    <div class="ctl__sep"></div>
+    <div class="ctl__grp">
+      <span class="ctl__lab">Color</span>
+      <div class="ctl__sw">
+        <button class="p-oro"   data-p="oro"   aria-pressed="true"  title="Oro Real" aria-label="Paleta Oro Real"></button>
+        <button class="p-onix"  data-p="onix"  aria-pressed="false" title="Ónix &amp; Champagne" aria-label="Paleta Ónix y Champagne"></button>
+        <button class="p-cacao" data-p="cacao" aria-pressed="false" title="Cacao &amp; Oro Rosa" aria-label="Paleta Cacao y Oro Rosa"></button>
+      </div>
+    </div>
+    <div class="ctl__sep"></div>
+    <div class="ctl__grp">
+      <span class="ctl__lab">Fuente</span>
+      <div class="ctl__fonts">
+        <button data-f="slab"   aria-pressed="true"  style="font-family:'Bitter','Rockwell','Palatino Linotype',serif">Slab</button>
+        <button data-f="didone" aria-pressed="false" style="font-family:'Playfair Display','Didot','Bodoni MT',Georgia,serif">Didone</button>
+        <button data-f="geom"   aria-pressed="false" style="font-family:'Poppins','Futura','Century Gothic',sans-serif">Geom</button>
+      </div>
+    </div>
   </div>
-  <span class="palette-name" id="pname">Oro Real</span>
 </div>
 
 <div class="announce">
@@ -789,28 +814,40 @@ footer { background: var(--ground-2); border-top: 1px solid var(--line); padding
   </div>
 </footer>
 
-<div class="pagetabs">
-  <button data-page="p-home" aria-pressed="true">Home</button>
-  <button data-page="p-prod" aria-pressed="false">Producto</button>
-  <button data-page="p-coll" aria-pressed="false">Colección</button>
-</div>
 
 <script>
 // ── Selector de paletas ──────────────────────────────
-const NOMBRES = { oro:'Oro Real', onix:'Ónix & Champagne', cacao:'Cacao & Oro Rosa' };
-document.querySelectorAll('.swatch').forEach(b => {
+document.querySelectorAll('.ctl__sw button').forEach(b => {
   b.addEventListener('click', () => {
-    document.querySelectorAll('.swatch').forEach(x => x.setAttribute('aria-pressed','false'));
+    document.querySelectorAll('.ctl__sw button').forEach(x => x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     document.documentElement.setAttribute('data-palette', b.dataset.p);
-    document.getElementById('pname').textContent = NOMBRES[b.dataset.p];
+  });
+});
+
+// ── Selector de tipografías ──────────────────────────
+const FUENTES = {
+  slab:   { d: "'Bitter','Zilla Slab','Rockwell','Palatino Linotype','Book Antiqua',Palatino,serif",
+            b: "'Barlow','Roboto Condensed','Segoe UI',system-ui,-apple-system,sans-serif" },
+  didone: { d: "'Playfair Display','Didot','Bodoni MT','Times New Roman',Georgia,serif",
+            b: "'Jost','Futura','Century Gothic','Segoe UI',system-ui,sans-serif" },
+  geom:   { d: "'Poppins','Futura','Century Gothic','Trebuchet MS',system-ui,sans-serif",
+            b: "'Inter','Segoe UI',system-ui,-apple-system,sans-serif" }
+};
+document.querySelectorAll('.ctl__fonts button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.ctl__fonts button').forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    const f = FUENTES[b.dataset.f];
+    document.documentElement.style.setProperty('--font-display', f.d);
+    document.documentElement.style.setProperty('--font-body', f.b);
   });
 });
 
 // ── Cambio de página ─────────────────────────────────
-document.querySelectorAll('.pagetabs button').forEach(b => {
+document.querySelectorAll('.ctl__pages button').forEach(b => {
   b.addEventListener('click', () => {
-    document.querySelectorAll('.pagetabs button').forEach(x => x.setAttribute('aria-pressed','false'));
+    document.querySelectorAll('.ctl__pages button').forEach(x => x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
     document.getElementById(b.dataset.page).classList.add('on');
