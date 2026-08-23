@@ -1,0 +1,780 @@
+<title>Rey Joyero — Casa de Oro</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   EL REY JOYERO · DISEÑO A — CLÁSICO LUJO
+   3 paletas intercambiables · Identidad: oro sobre oscuro
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ---------- PALETA 1 · ORO REAL (por defecto) ---------- */
+:root,
+[data-palette="oro"] {
+  --ground:      #0d0d0d;
+  --ground-2:    #151515;
+  --surface:     #1c1b18;
+  --accent:      #c9a227;
+  --accent-soft: #e3c766;
+  --accent-deep: #8a6f3d;
+  --ink:         #f2ede3;
+  --ink-mute:    #a39c8e;
+  --line:        rgba(201,162,39,.22);
+  --line-soft:   rgba(242,237,227,.10);
+  --sale:        #d98757;
+  --paper:       #f7f4ed;
+  --paper-ink:   #17150f;
+  --glow:        rgba(201,162,39,.30);
+}
+/* ---------- PALETA 2 · ÓNIX & CHAMPAGNE ---------- */
+[data-palette="onix"] {
+  --ground:      #101216;
+  --ground-2:    #171a20;
+  --surface:     #1e2229;
+  --accent:      #d4c9a8;
+  --accent-soft: #ece4cd;
+  --accent-deep: #8e856b;
+  --ink:         #f0f1f3;
+  --ink-mute:    #9aa0aa;
+  --line:        rgba(212,201,168,.22);
+  --line-soft:   rgba(240,241,243,.10);
+  --sale:        #c9a227;
+  --paper:       #f4f4f2;
+  --paper-ink:   #14161a;
+  --glow:        rgba(212,201,168,.26);
+}
+/* ---------- PALETA 3 · CACAO & ORO ROSA ---------- */
+[data-palette="cacao"] {
+  --ground:      #17100e;
+  --ground-2:    #1f1614;
+  --surface:     #291d19;
+  --accent:      #c98b6b;
+  --accent-soft: #e6b394;
+  --accent-deep: #8c5f47;
+  --ink:         #f5ebe4;
+  --ink-mute:    #b09c92;
+  --line:        rgba(201,139,107,.24);
+  --line-soft:   rgba(245,235,228,.10);
+  --sale:        #d4a15e;
+  --paper:       #f8f2ec;
+  --paper-ink:   #1c1310;
+  --glow:        rgba(201,139,107,.28);
+}
+
+*,*::before,*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Jost', 'Futura', 'Century Gothic', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .5s ease, color .5s ease;
+  overflow-x: hidden;
+}
+
+h1,h2,h3,.display {
+  font-family: 'Cormorant Garamond', 'Didot', 'Bodoni MT', Georgia, serif;
+  font-weight: 300;
+  text-wrap: balance;
+  margin: 0;
+  letter-spacing: .01em;
+}
+
+.eyebrow {
+  font-size: .68rem;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.wrap { width: min(1280px, 92vw); margin-inline: auto; }
+
+/* ═══════════ SELECTOR DE PALETAS ═══════════ */
+.palette-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: .6rem 1rem;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.palette-bar__label {
+  font-size: .6rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.swatches { display: flex; gap: .55rem; }
+.swatch {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.28);
+  cursor: pointer; padding: 0; position: relative;
+  transition: transform .25s, box-shadow .25s;
+}
+.swatch:hover { transform: scale(1.12); }
+.swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--ground), 0 0 0 3px currentColor;
+  transform: scale(1.1);
+}
+.swatch:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.sw-oro   { background: linear-gradient(135deg,#0d0d0d 0 50%,#c9a227 50% 100%); color:#c9a227; }
+.sw-onix  { background: linear-gradient(135deg,#101216 0 50%,#d4c9a8 50% 100%); color:#d4c9a8; }
+.sw-cacao { background: linear-gradient(135deg,#17100e 0 50%,#c98b6b 50% 100%); color:#c98b6b; }
+.palette-name {
+  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); min-width: 140px;
+}
+
+/* ═══════════ ANUNCIO ═══════════ */
+.announce {
+  margin-top: 52px;
+  background: var(--accent);
+  color: #0d0d0d;
+  font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+  padding: .55rem 1rem; text-align: center; font-weight: 500;
+  display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+}
+
+/* ═══════════ HEADER ═══════════ */
+.head {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 1.6rem 0; border-bottom: 1px solid var(--line-soft);
+}
+.nav { display: flex; gap: 1.9rem; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; }
+.nav a { color: var(--ink); text-decoration: none; opacity: .82; transition: color .2s, opacity .2s; white-space: nowrap; }
+.nav a:hover { color: var(--accent); opacity: 1; }
+.brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.55rem; letter-spacing: .3em; text-transform: uppercase;
+  text-align: center; color: var(--ink); white-space: nowrap;
+}
+.brand span { color: var(--accent); }
+.head-icons { display: flex; gap: 1.4rem; justify-content: flex-end; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; }
+.head-icons span { cursor: pointer; opacity: .82; }
+.head-icons span:hover { color: var(--accent); opacity: 1; }
+
+/* ═══════════ HERO ═══════════ */
+.hero {
+  position: relative; min-height: 82vh;
+  display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 3rem;
+  padding: 5rem 0 4rem;
+}
+.hero__text { position: relative; z-index: 2; }
+.hero h1 {
+  font-size: clamp(3.2rem, 7.5vw, 6.6rem);
+  line-height: .94; margin: 1.3rem 0 1.6rem;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero__lead { color: var(--ink-mute); max-width: 40ch; font-size: 1.02rem; }
+.hero__actions { display: flex; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .95rem 2.1rem; font-size: .74rem; letter-spacing: .2em;
+  text-transform: uppercase; text-decoration: none; cursor: pointer;
+  border: 1px solid var(--accent); background: var(--accent); color: #0d0d0d;
+  font-weight: 600; font-family: inherit;
+  transition: background .3s, color .3s, transform .2s;
+}
+.btn:hover { background: var(--accent-soft); transform: translateY(-2px); }
+.btn--ghost { background: transparent; color: var(--accent); }
+.btn--ghost:hover { background: var(--accent); color: #0d0d0d; }
+
+.hero__media { position: relative; }
+.hero__media img {
+  width: 100%; aspect-ratio: 4/5; object-fit: cover;
+  filter: saturate(1.05) contrast(1.04);
+}
+.hero__frame {
+  position: absolute; inset: 18px -18px -18px 18px;
+  border: 1px solid var(--line); pointer-events: none; z-index: -1;
+}
+.hero__tag {
+  position: absolute; bottom: 1.6rem; left: -1.6rem;
+  background: var(--ground); border: 1px solid var(--line);
+  padding: .9rem 1.4rem;
+}
+.hero__tag strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--accent); }
+.hero__tag span { font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
+
+/* ═══════════ BARRA DE CONFIANZA ═══════════ */
+.trust {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1px;
+  background: var(--line-soft); border-block: 1px solid var(--line-soft);
+}
+.trust div { background: var(--ground); padding: 1.7rem 1rem; text-align: center; }
+.trust b { display: block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
+.trust small { color: var(--ink-mute); font-size: .76rem; }
+
+/* ═══════════ SECCIONES ═══════════ */
+section { padding: 6rem 0; }
+.sec-head { text-align: center; margin-bottom: 3.4rem; }
+.sec-head h2 { font-size: clamp(2.2rem,4.4vw,3.4rem); margin: .7rem 0 .8rem; }
+.sec-head p { color: var(--ink-mute); max-width: 52ch; margin-inline: auto; }
+
+/* ═══════════ GRID DE PRODUCTOS ═══════════ */
+.grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2.2rem 1.6rem; }
+.card { position: relative; text-decoration: none; color: inherit; display: block; }
+.card__media { position: relative; overflow: hidden; background: var(--surface); aspect-ratio: 1/1.1; }
+.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.3,1); }
+.card:hover .card__media img { transform: scale(1.07); }
+.card__badge {
+  position: absolute; top: .9rem; left: .9rem; z-index: 2;
+  background: var(--sale); color: #12100c;
+  font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+  padding: .32rem .7rem; font-weight: 700;
+}
+.card__add {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--accent); color: #0d0d0d; border: 0;
+  font-family: inherit; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  padding: .9rem; font-weight: 600; cursor: pointer;
+  transform: translateY(101%); transition: transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.card:hover .card__add { transform: translateY(0); }
+.card__body { padding-top: 1rem; }
+.card__name { font-size: .93rem; margin-bottom: .35rem; }
+.card__price { display: flex; align-items: baseline; gap: .55rem; font-variant-numeric: tabular-nums; }
+.card__price b { color: var(--accent); font-weight: 600; }
+.card__price s { color: var(--ink-mute); font-size: .84rem; }
+.card__stars { color: var(--accent); font-size: .74rem; letter-spacing: .1em; margin-top: .3rem; }
+.card__stars span { color: var(--ink-mute); }
+
+
+/* TABS DE COLECCIONES */
+.tabnav { display:flex; justify-content:center; gap:2.4rem; border-bottom:1px solid var(--line-soft); margin-bottom:2.6rem; flex-wrap:wrap; }
+.tabnav button {
+  background:none; border:0; border-bottom:2px solid transparent; color:var(--ink-mute);
+  font-family:'Cormorant Garamond',Georgia,serif; font-size:1.5rem; padding:0 0 .8rem; cursor:pointer; transition:.25s;
+}
+.tabnav button:hover { color:var(--ink); }
+.tabnav button[aria-pressed="true"] { color:var(--accent); border-bottom-color:var(--accent); }
+.tabpane { display:none; }
+.tabpane.on { display:block; }
+
+/* CATEGORIAS */
+.cats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+.cat { position: relative; overflow: hidden; aspect-ratio: 3/4; text-decoration: none; display: block; }
+.cat img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.2,.7,.3,1); }
+.cat:hover img { transform: scale(1.06); }
+.cat::after { content:''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 8%, transparent 60%); }
+.cat__label { position: absolute; left: 1.6rem; bottom: 1.5rem; z-index: 2; }
+.cat__label h3 { font-size: 1.6rem; color: #fff; }
+.cat__label span { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+
+/* ═══════════ UGC ═══════════ */
+.ugc-strip { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; }
+.ugc { position: relative; aspect-ratio: 9/16; overflow: hidden; background: var(--surface); cursor: pointer; }
+.ugc img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+.ugc:hover img { transform: scale(1.06); }
+.ugc__play {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: linear-gradient(to top, rgba(0,0,0,.6), transparent 55%);
+}
+.ugc__play i {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.75); display: grid; place-items: center;
+  color: #fff; font-style: normal; font-size: .7rem; backdrop-filter: blur(3px);
+  background: rgba(0,0,0,.28); padding-left: 3px;
+}
+.ugc__user { position: absolute; left: .7rem; bottom: .7rem; color: #fff; font-size: .68rem; letter-spacing: .06em; z-index: 2; }
+
+/* ═══════════ FRANJA EDITORIAL ═══════════ */
+.editorial {
+  background: var(--paper); color: var(--paper-ink);
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0;
+}
+.editorial__img { height: 100%; }
+.editorial__img img { width: 100%; height: 100%; object-fit: cover; min-height: 460px; }
+.editorial__text { padding: clamp(2.5rem,5vw,5rem); }
+.editorial__text h2 { font-size: clamp(2rem,3.6vw,3rem); margin: .8rem 0 1.2rem; }
+.editorial__text .eyebrow { color: var(--accent-deep); }
+.editorial__text p { color: #57503f; max-width: 44ch; }
+.editorial__list { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; gap: .9rem; }
+.editorial__list li { display: flex; gap: .8rem; align-items: flex-start; font-size: .92rem; }
+.editorial__list b { color: var(--accent-deep); font-family: 'Cormorant Garamond',serif; font-size: 1.1rem; }
+
+/* ═══════════ PRODUCTO ═══════════ */
+.pdp { display: grid; grid-template-columns: 1.15fr .85fr; gap: 4rem; padding-top: 3.5rem; }
+.pdp__gallery { display: grid; grid-template-columns: 72px 1fr; gap: 1rem; align-items: start; }
+.pdp__thumbs { display: grid; gap: .7rem; }
+.pdp__thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; cursor: pointer; opacity: .55; border: 1px solid transparent; transition: opacity .25s, border-color .25s; }
+.pdp__thumbs img:hover, .pdp__thumbs img.on { opacity: 1; border-color: var(--accent); }
+.pdp__main { position: relative; background: var(--surface); }
+.pdp__main img { width: 100%; aspect-ratio: 1/1.15; object-fit: cover; }
+.pdp h1 { font-size: clamp(2.2rem,4vw,3.2rem); margin: .6rem 0 .9rem; }
+.pdp__rating { display: flex; align-items: center; gap: .6rem; color: var(--accent); font-size: .84rem; }
+.pdp__rating span { color: var(--ink-mute); }
+.pdp__price { display: flex; align-items: baseline; gap: .9rem; margin: 1.5rem 0; font-variant-numeric: tabular-nums; }
+.pdp__price b { font-size: 2.1rem; color: var(--accent); font-weight: 500; font-family: 'Cormorant Garamond',serif; }
+.pdp__price s { color: var(--ink-mute); }
+.pdp__price em { font-style: normal; background: var(--sale); color:#12100c; font-size: .66rem; letter-spacing:.1em; padding: .25rem .6rem; font-weight: 700; }
+.opt-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); margin: 1.6rem 0 .7rem; }
+.opts { display: flex; gap: .6rem; flex-wrap: wrap; }
+.opt {
+  padding: .7rem 1.3rem; border: 1px solid var(--line); background: transparent;
+  color: var(--ink); font-family: inherit; font-size: .82rem; cursor: pointer;
+  transition: border-color .25s, background .25s, color .25s;
+}
+.opt:hover { border-color: var(--accent); }
+.opt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0d0d0d; font-weight: 600; }
+.pdp__buy { display: grid; gap: .8rem; margin-top: 2rem; }
+.btn--full { justify-content: center; width: 100%; padding: 1.15rem; font-size: .8rem; }
+.msi {
+  border: 1px solid var(--line); padding: 1rem 1.2rem; margin-top: 1.2rem;
+  display: flex; gap: .9rem; align-items: center; font-size: .86rem;
+}
+.msi b { color: var(--accent); }
+.pdp__trust { display: grid; grid-template-columns: repeat(2,1fr); gap: .8rem; margin-top: 1.6rem; }
+.pdp__trust div { border: 1px solid var(--line-soft); padding: .9rem; font-size: .78rem; color: var(--ink-mute); }
+.pdp__trust b { display: block; color: var(--ink); font-size: .8rem; margin-bottom: .15rem; }
+
+details.acc { border-bottom: 1px solid var(--line-soft); }
+details.acc summary {
+  cursor: pointer; padding: 1.15rem 0; list-style: none;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .82rem; letter-spacing: .14em; text-transform: uppercase;
+}
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: '+'; color: var(--accent); font-size: 1.2rem; }
+details.acc[open] summary::after { content: '−'; }
+details.acc p { color: var(--ink-mute); padding-bottom: 1.2rem; margin: 0; font-size: .9rem; }
+
+/* ═══════════ COLECCIÓN ═══════════ */
+.coll-head { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--line-soft); }
+.coll-head h1 { font-size: clamp(2.4rem,5vw,4rem); margin: .6rem 0 .5rem; }
+.coll-bar { display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 0; flex-wrap: wrap; gap: 1rem; }
+.chips { display: flex; gap: .6rem; flex-wrap: wrap; }
+.chip {
+  padding: .5rem 1.1rem; border: 1px solid var(--line); background: transparent;
+  color: var(--ink-mute); font-family: inherit; font-size: .74rem; letter-spacing: .1em;
+  text-transform: uppercase; cursor: pointer; transition: .25s;
+}
+.chip:hover { border-color: var(--accent); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0d0d0d; font-weight: 600; }
+
+/* ═══════════ FOOTER ═══════════ */
+footer { background: var(--ground-2); border-top: 1px solid var(--line); padding: 4.5rem 0 2rem; margin-top: 2rem; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 2.5rem; }
+.foot-grid h4 { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
+.foot-grid ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
+.foot-grid a { color: var(--ink-mute); text-decoration: none; font-size: .88rem; }
+.foot-grid a:hover { color: var(--accent); }
+.foot-brand { font-family: 'Cormorant Garamond',serif; font-size: 1.4rem; letter-spacing: .28em; text-transform: uppercase; margin-bottom: 1rem; }
+.foot-brand span { color: var(--accent); }
+.wa { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent) !important; font-weight: 600; }
+.foot-bottom {
+  margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-soft);
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  font-size: .78rem; color: var(--ink-mute);
+}
+
+/* ═══════════ TABS DE PÁGINA ═══════════ */
+.pagetabs {
+  position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 998;
+  display: flex; gap: .3rem; padding: .35rem;
+  background: rgba(0,0,0,.86); backdrop-filter: blur(14px);
+  border: 1px solid var(--line); border-radius: 100px;
+}
+.pagetabs button {
+  padding: .6rem 1.4rem; border: 0; background: transparent; color: var(--ink-mute);
+  font-family: inherit; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  cursor: pointer; border-radius: 100px; transition: .25s;
+}
+.pagetabs button:hover { color: var(--ink); }
+.pagetabs button[aria-pressed="true"] { background: var(--accent); color: #0d0d0d; font-weight: 600; }
+
+.page { display: none; }
+.page.on { display: block; }
+
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero__media { order: -1; }
+  .pdp, .editorial { grid-template-columns: 1fr; }
+  .grid, .cats { grid-template-columns: repeat(2,1fr); }
+  .ugc-strip { grid-template-columns: repeat(3,1fr); }
+  .trust { grid-template-columns: repeat(2,1fr); }
+  .foot-grid { grid-template-columns: repeat(2,1fr); }
+  .nav, .head-icons { display: none; }
+  .head { grid-template-columns: 1fr; }
+  .editorial__img img { min-height: 300px; }
+}
+@media (max-width: 620px) {
+  .grid, .cats, .ugc-strip { grid-template-columns: repeat(2,1fr); }
+  .pdp__gallery { grid-template-columns: 1fr; }
+  .pdp__thumbs { grid-auto-flow: column; }
+  .announce { gap: 1rem; font-size: .62rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<!-- ══════════ SELECTOR DE PALETAS ══════════ -->
+<div class="palette-bar">
+  <span class="palette-bar__label">Paleta</span>
+  <div class="swatches">
+    <button class="swatch sw-oro"   data-p="oro"   aria-pressed="true"  aria-label="Paleta Oro Real"></button>
+    <button class="swatch sw-onix"  data-p="onix"  aria-pressed="false" aria-label="Paleta Ónix y Champagne"></button>
+    <button class="swatch sw-cacao" data-p="cacao" aria-pressed="false" aria-label="Paleta Cacao y Oro Rosa"></button>
+  </div>
+  <span class="palette-name" id="pname">Oro Real</span>
+</div>
+
+<div class="announce">
+  <span>Entrega 2–4 días hábiles</span>
+  <span>Envío gratis desde $600</span>
+  <span>Pagos seguros</span>
+</div>
+
+<header class="wrap head">
+  <nav class="nav">
+    <a href="#">Oro 18k</a><a href="#">Plata</a><a href="#">Paquetes</a><a href="#">Personalizados</a><a href="#">Relojes</a><a href="#">Más vendidos</a>
+  </nav>
+  <div class="brand">Rey <span>Joyero</span></div>
+  <div class="head-icons"><span>Buscar</span><span>Cuenta</span><span>Bolsa (0)</span></div>
+</header>
+
+<!-- ════════════════════ HOME ════════════════════ -->
+<main class="page on" id="p-home">
+  <div class="wrap hero">
+    <div class="hero__text">
+      <span class="eyebrow">Oro laminado · Baño 18k</span>
+      <h1>El oro que<br><em>se hereda</em></h1>
+      <p class="hero__lead">Cadenas, pulsos y dijes con baño de oro de 18 quilates. Piezas que aguantan el uso diario y el paso de los años.</p>
+      <div class="hero__actions">
+        <a class="btn" href="#">Ver colección</a>
+        <a class="btn btn--ghost" href="#">Paquetes desde $899</a>
+      </div>
+    </div>
+    <div class="hero__media">
+      <div class="hero__frame"></div>
+      <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=900" alt="Modelo con cadena de oro laminado de El Rey Joyero">
+      <div class="hero__tag"><strong>+10,000</strong><span>Clientes satisfechos</span></div>
+    </div>
+  </div>
+
+  <div class="trust">
+    <div><b>Envío gratis</b><small>En compras desde $600</small></div>
+    <div><b>2–4 días</b><small>Entrega en todo México</small></div>
+    <div><b>Meses sin intereses</b><small>Con Mercado Pago</small></div>
+    <div><b>Garantía real</b><small>30 días de devolución</small></div>
+  </div>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Lo más vendido</span>
+      <h2>Cadenas que no pasan de moda</h2>
+      <p>Los tejidos clásicos —cartier, barbada, torzal— en baño de oro 18k sobre acero inoxidable.</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="#">
+        <div class="card__media">
+          <span class="card__badge">−13%</span>
+          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier">
+          <button class="card__add">Agregar</button>
+        </div>
+        <div class="card__body">
+          <div class="card__name">Cadena Cartier</div>
+          <div class="card__price"><b>$699</b><s>$800</s></div>
+          <div class="card__stars">★★★★★ <span>(25)</span></div>
+        </div>
+      </a>
+      <a class="card" href="#">
+        <div class="card__media">
+          <span class="card__badge">−33%</span>
+          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada">
+          <button class="card__add">Agregar</button>
+        </div>
+        <div class="card__body">
+          <div class="card__name">Cadena Barbada</div>
+          <div class="card__price"><b>$599</b><s>$900</s></div>
+          <div class="card__stars">★★★★★ <span>(41)</span></div>
+        </div>
+      </a>
+      <a class="card" href="#">
+        <div class="card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino">
+          <button class="card__add">Agregar</button>
+        </div>
+        <div class="card__body">
+          <div class="card__name">Cadena Tejido Bizantino</div>
+          <div class="card__price"><b>$899</b></div>
+          <div class="card__stars">★★★★★ <span>(18)</span></div>
+        </div>
+      </a>
+      <a class="card" href="#">
+        <div class="card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=600" alt="Cadena Mónaco Chain">
+          <button class="card__add">Agregar</button>
+        </div>
+        <div class="card__body">
+          <div class="card__name">Cadena Mónaco Chain</div>
+          <div class="card__price"><b>$1,800</b></div>
+          <div class="card__stars">★★★★☆ <span>(12)</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Explora</span>
+      <h2>Nuestras colecciones</h2>
+      <p>Lo más vendido de cada categoría.</p>
+    </div>
+    <div class="tabnav"><button data-tab="tb-cad" aria-pressed="true">Cadenas</button><button data-tab="tb-paq" aria-pressed="false">Paquetes</button><button data-tab="tb-pul" aria-pressed="false">Pulsos</button></div><div class="tabpane on" id="tb-cad"><div class="grid"><a class="card" href="#"><div class="card__media"><span class="card__badge">-13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Cartier</div><div class="card__price"><b>$699</b><s>$800</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(25)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Barbada</div><div class="card__price"><b>$599</b><s>$900</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(41)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=600" alt="Cadena Torzal Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Delgada</div><div class="card__price"><b>$599</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(33)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Tejido Bizantino</div><div class="card__price"><b>$899</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(18)</span></div></div></a></div></div><div class="tabpane" id="tb-paq"><div class="grid"><a class="card" href="#"><div class="card__media"><span class="card__badge">-10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=600" alt="Paquete Cartier Pulso y Cadena"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Cartier Pulso y Cadena</div><div class="card__price"><b>$899</b><s>$1,000</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(14)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-25%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_95jkl395jkl395jk.jpg?width=600" alt="Paquete Barbado Cadena y Pulso"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Barbado Cadena y Pulso</div><div class="card__price"><b>$899</b><s>$1,200</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(9)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-figaro-oro.jpg?width=600" alt="Paquete Figaro Premium"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Figaro Premium</div><div class="card__price"><b>$1,299</b><s>$1,500</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(7)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-set-cadena-pulsera-cubana-oro.jpg?width=600" alt="Paquete Monaco Cubano"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Monaco Cubano</div><div class="card__price"><b>$1,799</b><s>$2,000</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(5)</span></div></div></a></div></div><div class="tabpane" id="tb-pul"><div class="grid"><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=600" alt="Pulso Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Cartier</div><div class="card__price"><b>$499</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(21)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=600" alt="Pulso Barbado"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Barbado</div><div class="card__price"><b>$499</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(17)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/2A60B915-85B0-41DC-9BA4-FA65CEDED2AF.jpg?width=600" alt="Pulso Torzal"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Torzal</div><div class="card__price"><b>$549</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(12)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/54E172A7-AA21-45D8-9740-12538D536493.jpg?width=600" alt="Pulso Cubano Premium"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Cubano Premium</div><div class="card__price"><b>$699</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(8)</span></div></div></a></div></div>
+  </section>
+
+  <section class="wrap" style="padding-top:0">
+    <div class="sec-head">
+      <span class="eyebrow">Por categoría</span>
+      <h2>Encuentra tu pieza</h2>
+    </div>
+    <div class="cats">
+      <a class="cat" href="#">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/653F6B2A-4C09-4A19-8130-3BC27DD405F9.webp?width=700" alt="Cadenas">
+        <div class="cat__label"><span>30 piezas</span><h3>Cadenas</h3></div>
+      </a>
+      <a class="cat" href="#">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=700" alt="Pulsos">
+        <div class="cat__label"><span>32 piezas</span><h3>Pulsos</h3></div>
+      </a>
+      <a class="cat" href="#">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/AD998A0C-3B6D-4622-9F5C-CF610F804339.jpg?width=700" alt="Kits y paquetes">
+        <div class="cat__label"><span>10 paquetes</span><h3>Paquetes</h3></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="editorial">
+    <div class="editorial__img">
+      <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Professional_commercial_jewelry_product_photograph-1772212821976.png?width=900" alt="Detalle del baño de oro">
+    </div>
+    <div class="editorial__text">
+      <span class="eyebrow">Por qué nuestro oro</span>
+      <h2>No todo el oro laminado es igual</h2>
+      <p>La diferencia entre una pieza que dura años y una que se destiñe en semanas está en el grosor del baño y en el metal de base.</p>
+      <ul class="editorial__list">
+        <li><b>01</b><span>Baño de oro de 18 quilates, no de 14k ni "tono oro".</span></li>
+        <li><b>02</b><span>Base de acero inoxidable, no de cobre ni aleaciones que manchan la piel.</span></li>
+        <li><b>03</b><span>Broche de mosquetón reforzado, revisado pieza por pieza.</span></li>
+        <li><b>04</b><span>Hipoalergénico: no provoca comezón ni marca verde.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Así se ve puesto</span>
+      <h2>Nuestros clientes</h2>
+      <p>Videos reales de quienes ya traen su pieza. Sin retoques ni modelos de catálogo.</p>
+    </div>
+    <div class="ugc-strip">
+      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=400" alt="Cliente con cadena"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@carlos_mx</span></div>
+      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=400" alt="Cliente con pulso"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@luis.gdl</span></div>
+      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/2A60B915-85B0-41DC-9BA4-FA65CEDED2AF.jpg?width=400" alt="Cliente con kit"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@el_toro99</span></div>
+      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/54E172A7-AA21-45D8-9740-12538D536493.jpg?width=400" alt="Cliente con dije"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@memo_rdz</span></div>
+      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/6B2B69FE-BBD2-4E0F-B964-C7F70CD71CEB.jpg?width=400" alt="Cliente con cadena gruesa"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@jr_monterrey</span></div>
+    </div>
+  </section>
+</main>
+
+<!-- ════════════════════ PRODUCTO ════════════════════ -->
+<main class="page" id="p-prod">
+  <div class="wrap pdp">
+    <div class="pdp__gallery">
+      <div class="pdp__thumbs">
+        <img class="on" src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=200" alt="Vista 1" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=900">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=200" alt="Vista 2" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=900">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=200" alt="Vista 3" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=900">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=200" alt="Vista 4" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=900">
+      </div>
+      <div class="pdp__main">
+        <img id="pdpMain" src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=900" alt="Cadena Cartier oro laminado 18k">
+      </div>
+    </div>
+
+    <div class="pdp__info">
+      <span class="eyebrow">Oro laminado · Baño 18k</span>
+      <h1>Cadena Cartier</h1>
+      <div class="pdp__rating">★★★★★ <span>25 reseñas verificadas</span></div>
+      <div class="pdp__price"><b>$699</b><s>$800</s><em>Ahorras $101</em></div>
+
+      <div class="opt-label">Tamaño</div>
+      <div class="opts">
+        <button class="opt" aria-pressed="true">50 cm</button>
+        <button class="opt" aria-pressed="false">60 cm</button>
+        <button class="opt" aria-pressed="false">70 cm</button>
+      </div>
+
+      <div class="pdp__buy">
+        <button class="btn btn--full">Agregar a la bolsa · $699</button>
+        <button class="btn btn--ghost btn--full">Comprar ahora</button>
+      </div>
+
+      <div class="msi">
+        <span style="font-size:1.4rem">💳</span>
+        <span>Hasta <b>12 meses sin intereses</b> con Mercado Pago.<br><span style="color:var(--ink-mute);font-size:.8rem">También sin tarjeta de crédito.</span></span>
+      </div>
+
+      <div class="pdp__trust">
+        <div><b>Envío gratis</b>Entrega en 2–4 días</div>
+        <div><b>30 días</b>Devolución sin preguntas</div>
+        <div><b>Hipoalergénico</b>No mancha la piel</div>
+        <div><b>Estuche incluido</b>Listo para regalo</div>
+      </div>
+
+      <div style="margin-top:2.4rem">
+        <details class="acc" open><summary>Descripción</summary><p>Cadena tejido cartier con baño de oro de 18 quilates sobre base de acero inoxidable. Eslabones planos de 7 mm con broche de mosquetón reforzado. Conserva el brillo con el uso diario y no provoca reacciones en la piel.</p></details>
+        <details class="acc"><summary>Material y medidas</summary><p>Baño de oro 18k · Base de acero inoxidable · Ancho 7 mm · Largos disponibles: 50, 60 y 70 cm · Broche de mosquetón.</p></details>
+        <details class="acc"><summary>Cuidados</summary><p>Evita el contacto con perfumes, cloro y productos de limpieza. Retírala antes de bañarte o nadar. Limpia con un paño seco y suave. Guárdala en su estuche cuando no la uses.</p></details>
+        <details class="acc"><summary>Envíos y devoluciones</summary><p>Envío gratis en compras desde $600. Entrega de 2 a 4 días hábiles en todo México con número de rastreo. Devolución dentro de los 30 días posteriores a la entrega.</p></details>
+      </div>
+    </div>
+  </div>
+
+  <section class="wrap" style="padding-top:4rem">
+    <div class="sec-head">
+      <span class="eyebrow">Completa el look</span>
+      <h2>Va bien con</h2>
+    </div>
+    <div class="grid">
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/49BC6636-08E6-4B47-B795-C9739FA7F875.jpg?width=600" alt="Dije Cruz Corona"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije Cruz Corona</div><div class="card__price"><b>$699</b></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=600" alt="Dije San Judas"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije San Judas Adiamantado</div><div class="card__price"><b>$699</b></div></div></a>
+      <a class="card" href="#"><div class="card__media"><span class="card__badge">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=600" alt="Paquete Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Cartier Pulso y Cadena</div><div class="card__price"><b>$899</b><s>$1,000</s></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=600" alt="Dije Baraja Rey"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije Baraja Rey</div><div class="card__price"><b>$799</b></div></div></a>
+    </div>
+  </section>
+</main>
+
+<!-- ════════════════════ COLECCIÓN ════════════════════ -->
+<main class="page" id="p-coll">
+  <div class="wrap coll-head">
+    <span class="eyebrow">30 piezas</span>
+    <h1>Cadenas</h1>
+    <p style="color:var(--ink-mute);max-width:56ch">Tejidos clásicos en baño de oro 18k sobre acero inoxidable. Todas nuestras cadenas incluyen estuche y garantía de 30 días.</p>
+  </div>
+  <div class="wrap coll-bar">
+    <div class="chips">
+      <button class="chip" aria-pressed="true">Todas</button>
+      <button class="chip" aria-pressed="false">Delgadas</button>
+      <button class="chip" aria-pressed="false">Gruesas</button>
+      <button class="chip" aria-pressed="false">Con dije</button>
+      <button class="chip" aria-pressed="false">En oferta</button>
+    </div>
+    <div class="chips"><button class="chip">Ordenar: Más vendidas ▾</button></div>
+  </div>
+  <section class="wrap" style="padding-top:2rem">
+    <div class="grid">
+      <a class="card" href="#"><div class="card__media"><span class="card__badge">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Cartier</div><div class="card__price"><b>$699</b><s>$800</s></div><div class="card__stars">★★★★★ <span>(25)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><span class="card__badge">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Barbada</div><div class="card__price"><b>$599</b><s>$900</s></div><div class="card__stars">★★★★★ <span>(41)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=600" alt="Cadena Torzal Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Delgada</div><div class="card__price"><b>$599</b></div><div class="card__stars">★★★★★ <span>(33)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/45D11F02-8D16-40E0-BACA-D80A3013F527.jpg?width=600" alt="Cadena Torzal Gruesa"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Gruesa</div><div class="card__price"><b>$750</b></div><div class="card__stars">★★★★☆ <span>(15)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Tejido Bizantino</div><div class="card__price"><b>$899</b></div><div class="card__stars">★★★★★ <span>(18)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/406321CD-4697-4E03-BD94-BE7C043B075C.jpg?width=600" alt="Cadena Mónaco Cubana"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Cubana</div><div class="card__price"><b>$1,200</b></div><div class="card__stars">★★★★★ <span>(9)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><span class="card__badge">−20%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/3F5D5C6D-4557-4766-8427-CFD34D2E7B36.jpg?width=600" alt="Cadena Mónaco Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Delgada</div><div class="card__price"><b>$799</b><s>$1,000</s></div><div class="card__stars">★★★★☆ <span>(11)</span></div></div></a>
+      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=600" alt="Cadena Mónaco Chain"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Chain</div><div class="card__price"><b>$1,800</b></div><div class="card__stars">★★★★★ <span>(12)</span></div></div></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-brand">Rey <span>Joyero</span></div>
+      <p style="color:var(--ink-mute);font-size:.88rem;max-width:34ch">Joyería en oro laminado 18k para hombre. Enviamos a todo México.</p>
+    </div>
+    <div><h4>Tienda</h4><ul>
+      <li><a href="#">Cadenas</a></li><li><a href="#">Pulsos</a></li><li><a href="#">Dijes</a></li>
+      <li><a href="#">Cadenas Gruesas</a></li><li><a href="#">Van Cleef</a></li><li><a href="#">Paquetes</a></li>
+      <li><a href="#">Plata</a></li><li><a href="#">Personalizados</a></li><li><a href="#">Relojes</a></li><li><a href="#">Más vendidos</a></li>
+    </ul></div>
+    <div><h4>Información</h4><ul>
+      <li><a href="#">Nosotros</a></li>
+      <li><a href="#">Contáctanos</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Politicas de envio</a></li>
+      <li><a href="#">Politicas de reembolso</a></li>
+      <li><a href="#">Politicas de privacidad</a></li>
+      <li><a href="#">Términos de servicio</a></li>
+    </ul></div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><a class="wa" href="#">WhatsApp 33 1151 2137</a></li>
+        <li><a href="#">Instagram @elreyjoyero</a></li>
+        <li><a href="#">TikTok @elreyjoyero</a></li>
+        <li><a href="#">Facebook @elreyjoyero</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 El Rey Joyero</span>
+    <span>Politicas de privacidad · Términos de servicio · Politicas de envio · Politicas de reembolso</span>
+  </div>
+</footer>
+
+<div class="pagetabs">
+  <button data-page="p-home" aria-pressed="true">Home</button>
+  <button data-page="p-prod" aria-pressed="false">Producto</button>
+  <button data-page="p-coll" aria-pressed="false">Colección</button>
+</div>
+
+<script>
+// ── Selector de paletas ──────────────────────────────
+const NOMBRES = { oro:'Oro Real', onix:'Ónix & Champagne', cacao:'Cacao & Oro Rosa' };
+document.querySelectorAll('.swatch').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.swatch').forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    document.documentElement.setAttribute('data-palette', b.dataset.p);
+    document.getElementById('pname').textContent = NOMBRES[b.dataset.p];
+  });
+});
+
+// ── Cambio de página ─────────────────────────────────
+document.querySelectorAll('.pagetabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.pagetabs button').forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+    document.getElementById(b.dataset.page).classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ── Opciones de variante y filtros ───────────────────
+function grupo(sel) {
+  document.querySelectorAll(sel).forEach(b => {
+    b.addEventListener('click', () => {
+      b.parentElement.querySelectorAll(sel).forEach(x => x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+    });
+  });
+}
+grupo('.opt'); grupo('.chip');
+
+document.querySelectorAll('.tabnav button').forEach(function(b) {
+  b.addEventListener('click', function() {
+    b.parentElement.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+    b.setAttribute('aria-pressed','true');
+    document.querySelectorAll('.tabpane').forEach(function(p){ p.classList.remove('on'); });
+    document.getElementById(b.dataset.tab).classList.add('on');
+  });
+});
+
+
+// ── Galería de producto ──────────────────────────────
+document.querySelectorAll('.pdp__thumbs img').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.pdp__thumbs img').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById('pdpMain').src = t.dataset.full;
+  });
+});
+
+// ── Evitar navegación de los enlaces demo ────────────
+document.querySelectorAll('a[href="#"]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+document.querySelectorAll('.card__add').forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); }));
+</script>
