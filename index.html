@@ -1,1311 +1,840 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
-<title>Rey Joyero — Casa de Oro</title>
+<meta name="color-scheme" content="light">
+<title>Rey Joyero — Oro que Dura</title>
 <style>
-
-/* ═══════════ BASE RESPONSIVE (estandares actuales) ═══════════ */
-
-html {
-  -webkit-text-size-adjust: 100%;   /* iOS no infla el texto en landscape */
-  text-size-adjust: 100%;
-  scroll-behavior: smooth;
-}
-
-/* Media fluida por defecto: nunca desborda su contenedor */
-img, video, svg, picture, canvas {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Evita que palabras largas rompan el layout en pantallas chicas */
-h1, h2, h3, p, a, li, button, summary { overflow-wrap: break-word; }
-
-/* Areas tactiles: minimo 44x44 CSS px (WCAG 2.2 / HIG de Apple) */
-@media (pointer: coarse) {
-  button, .btn, .opt, .chip, a.card, .ctl__pages button, .ctl__fonts button {
-    min-height: 44px;
-  }
-  .ctl__sw button { min-width: 44px; min-height: 44px; }
-}
-
-/* Hover solo donde existe puntero fino: en tactil no se queda pegado */
-@media (hover: none) {
-  .card__add, .qadd { transform: none; position: static; width: 100%; }
-  .card:hover .card__media img,
-  .card:hover .card__m img,
-  .cat:hover img,
-  .ugc:hover img { transform: none; }
-}
-
 /* ═══════════════════════════════════════════════════════════════
-   EL REY JOYERO · DISEÑO A — CLÁSICO LUJO
-   3 paletas intercambiables · Identidad: oro sobre oscuro
+   EL REY JOYERO · v2 DISEÑO A — CLARIDAD Y CONFIANZA
+   Fondo blanco · 3 acentos · 3 tipografías · mobile-first
    ═══════════════════════════════════════════════════════════════ */
 
-/* ---------- PALETA 1 · ORO REAL (por defecto) ---------- */
-:root,
-[data-palette="oro"] {
-  --ground:      #0d0d0d;
-  --ground-2:    #151515;
-  --surface:     #1c1b18;
-  --accent:      #c9a227;
-  --accent-soft: #e3c766;
-  --accent-deep: #8a6f3d;
-  --ink:         #f2ede3;
-  --ink-mute:    #a39c8e;
-  --line:        rgba(201,162,39,.22);
-  --line-soft:   rgba(242,237,227,.10);
-  --sale:        #d98757;
-  --paper:       #f7f4ed;
-  --paper-ink:   #17150f;
-  --glow:        rgba(201,162,39,.30);
+/* ---------- TIPOGRAFÍAS (conmutables) ----------
+   1 CLARA   — formas abiertas, mínima carga cognitiva → confianza
+   2 SÓLIDA  — trazo denso y ancho, masa visual → autoridad, justifica precio
+   3 TÉCNICA — grotesca + cifras monoespaciadas → precisión, se ve diseñado
+   Ninguna cursiva, ninguna script. Estructuralmente distintas entre sí. */
+:root {
+  --f-display: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --f-body:    'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --f-num:     'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --tracking-display: -.03em;
+  --weight-display: 700;
 }
-/* ---------- PALETA 2 · ÓNIX & CHAMPAGNE ---------- */
-[data-palette="onix"] {
-  --ground:      #101216;
-  --ground-2:    #171a20;
-  --surface:     #1e2229;
-  --accent:      #d4c9a8;
-  --accent-soft: #ece4cd;
-  --accent-deep: #8e856b;
-  --ink:         #f0f1f3;
-  --ink-mute:    #9aa0aa;
-  --line:        rgba(212,201,168,.22);
-  --line-soft:   rgba(240,241,243,.10);
-  --sale:        #c9a227;
-  --paper:       #f4f4f2;
-  --paper-ink:   #14161a;
-  --glow:        rgba(212,201,168,.26);
+
+/* ---------- ACENTO 1 · ORO CLÁSICO (por defecto) ---------- */
+:root, [data-tone="oro"] {
+  --accent:      #8a6a1e;   /* dorado legible sobre blanco (4.6:1) */
+  --accent-deep: #6b5117;
+  --accent-soft: #f5edda;
+  --accent-line: #e3d5ae;
 }
-/* ---------- PALETA 3 · CACAO & ORO ROSA ---------- */
-[data-palette="cacao"] {
-  --ground:      #17100e;
-  --ground-2:    #1f1614;
-  --surface:     #291d19;
-  --accent:      #c98b6b;
-  --accent-soft: #e6b394;
-  --accent-deep: #8c5f47;
-  --ink:         #f5ebe4;
-  --ink-mute:    #b09c92;
-  --line:        rgba(201,139,107,.24);
-  --line-soft:   rgba(245,235,228,.10);
-  --sale:        #d4a15e;
-  --paper:       #f8f2ec;
-  --paper-ink:   #1c1310;
-  --glow:        rgba(201,139,107,.28);
+/* ---------- ACENTO 2 · ÁMBAR CÁLIDO ---------- */
+[data-tone="ambar"] {
+  --accent:      #a35d2a;
+  --accent-deep: #7d451e;
+  --accent-soft: #f8ece2;
+  --accent-line: #e8d2bf;
+}
+/* ---------- ACENTO 3 · GRAFITO (oro mínimo) ---------- */
+[data-tone="grafito"] {
+  --accent:      #2f2f2f;
+  --accent-deep: #111111;
+  --accent-soft: #f2f2f2;
+  --accent-line: #d8d8d8;
 }
 
 :root {
-  --font-display: 'Bitter','Zilla Slab','Rockwell','Palatino Linotype','Book Antiqua',Palatino,serif;
-  --font-body:    'Barlow','Roboto Condensed','Segoe UI',system-ui,-apple-system,sans-serif;
+  --ink:        #16150f;
+  --ink-2:      #55524a;
+  --ink-3:      #8c887e;
+  --bg:         #ffffff;
+  --bg-warm:    #faf8f4;
+  --line:       #e8e5df;
+  --line-soft:  #f2f0eb;
+  --ok:         #2f6b46;
+  --sale:       #a8321e;
+  --r:          6px;
+  --r-lg:       8px;
+  --shadow:     0 1px 2px rgba(22,21,15,.05), 0 8px 24px rgba(22,21,15,.06);
 }
 
 *,*::before,*::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--ground);
+  background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--f-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  transition: background .5s ease, color .5s ease;
   overflow-x: hidden;
+  padding-top: var(--ctl-h, 52px);
 }
 
-h1,h2,h3,.display {
-  font-family: var(--font-display);
-  font-weight: 600;
-  text-wrap: balance;
+img, svg, video { max-width: 100%; height: auto; display: block; }
+h1,h2,h3 {
+  font-family: var(--f-display);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.05;
   margin: 0;
-  letter-spacing: -.015em;
+  text-wrap: balance;
 }
+p { margin: 0; }
+a { color: inherit; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+
+.wrap { width: min(1240px, 100% - 2.5rem); margin-inline: auto; }
+@media (max-width: 700px) { .wrap { width: min(1240px, 100% - 2rem); } }
 
 .eyebrow {
-  font-size: .68rem;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.wrap { width: min(1280px, 92vw); margin-inline: auto; }
-
-/* ═══════════ BARRA DE CONTROL (preview) ═══════════ */
-.ctl {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: #000; border-bottom: 1px solid rgba(255,255,255,.14);
-  font-family: 'Barlow','Segoe UI',system-ui,sans-serif;
-}
-.ctl__in {
-  display: flex; align-items: center; justify-content: center;
-  gap: 1.6rem; padding: .5rem 1rem; flex-wrap: wrap;
-}
-.ctl__grp { display: flex; align-items: center; gap: .55rem; }
-.ctl__lab {
-  font-size: .68rem; font-weight: 700; letter-spacing: .18em;
-  text-transform: uppercase; color: #8a8a8a; white-space: nowrap;
-}
-.ctl__sep { width: 1px; height: 22px; background: rgba(255,255,255,.16); }
-
-.ctl__pages { display: flex; gap: 2px; background: rgba(255,255,255,.07); padding: 2px; }
-.ctl__pages button {
-  padding: .5rem 1.1rem; border: 0; background: transparent; color: #b9b9b9;
-  font-family: inherit; font-size: .74rem; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase; cursor: pointer;
-  transition: background .18s, color .18s; white-space: nowrap;
-}
-.ctl__pages button:hover { color: #fff; }
-.ctl__pages button[aria-pressed="true"] { background: var(--accent); color: #000; }
-.ctl__pages button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
-
-.ctl__sw { display: flex; gap: .4rem; }
-.ctl__sw button {
-  width: 28px; height: 28px; padding: 0; cursor: pointer;
-  border: 2px solid rgba(255,255,255,.25); border-radius: 50%;
-  transition: transform .18s, border-color .18s;
-}
-.ctl__sw button:hover { transform: scale(1.12); }
-.ctl__sw button[aria-pressed="true"] { border-color: currentColor; transform: scale(1.12); }
-.ctl__sw button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.p-oro   { background: linear-gradient(135deg,#0d0d0d 50%,#c9a227 50%); color:#c9a227; }
-.p-onix  { background: linear-gradient(135deg,#101216 50%,#d4c9a8 50%); color:#d4c9a8; }
-.p-cacao { background: linear-gradient(135deg,#17100e 50%,#c98b6b 50%); color:#c98b6b; }
-
-.ctl__fonts { display: flex; gap: 2px; background: rgba(255,255,255,.07); padding: 2px; }
-.ctl__fonts button {
-  padding: .45rem .85rem; border: 0; background: transparent; color: #b9b9b9;
-  font-size: .8rem; cursor: pointer; transition: background .18s, color .18s; white-space: nowrap;
-}
-.ctl__fonts button:hover { color: #fff; }
-.ctl__fonts button[aria-pressed="true"] { background: rgba(255,255,255,.92); color: #000; }
-.ctl__fonts button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
-
-@media (max-width: 900px) {
-  .ctl__in { gap: .9rem; padding: .45rem .6rem; }
-  .ctl__sep, .ctl__lab { display: none; }
-  .ctl__pages button { padding: .45rem .8rem; font-size: .7rem; letter-spacing: .08em; }
-  .ctl__fonts button { padding: .4rem .6rem; font-size: .74rem; }
-  .ctl__sw button { width: 25px; height: 25px; }
-}
-@media (max-width: 560px) {
-  .ctl__in { gap: .7rem; }
-  .ctl__pages { width: 100%; justify-content: center; order: -1; }
-  .ctl__pages button { flex: 1; padding: .5rem .3rem; font-size: .68rem; }
-}
-
-/* ═══════════ ANUNCIO ═══════════ */
-.announce {
-  background: var(--accent);
-  color: #0d0d0d;
-  font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
-  padding: .55rem 1rem; text-align: center; font-weight: 500;
-  display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
-}
-
-/* ═══════════ HEADER ═══════════ */
-.head {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  padding: 1.6rem 0; border-bottom: 1px solid var(--line-soft);
-}
-.nav { display: flex; gap: 1.9rem; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; }
-.nav a { color: var(--ink); text-decoration: none; opacity: .82; transition: color .2s, opacity .2s; white-space: nowrap; }
-.nav a:hover { color: var(--accent); opacity: 1; }
-.brand {
-  font-family: var(--font-display);
-  font-size: 1.35rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-  text-align: center; color: var(--ink); white-space: nowrap;
-}
-.brand span { color: var(--accent); }
-.head-icons { display: flex; gap: 1.4rem; justify-content: flex-end; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; }
-.head-icons span { cursor: pointer; opacity: .82; }
-.head-icons span:hover { color: var(--accent); opacity: 1; }
-
-/* ═══════════ HERO ═══════════ */
-.hero {
-  position: relative; min-height: 82svh;
-  display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 3rem;
-  padding: 5rem 0 4rem;
-}
-.hero__text { position: relative; z-index: 2; }
-.hero h1 {
-  font-size: clamp(3.2rem, 7.5vw, 6.6rem);
-  line-height: .94; margin: 1.3rem 0 1.6rem;
-}
-.hero h1 em { font-style: normal; font-weight: 400; color: var(--accent); }
-.hero__lead { color: var(--ink-mute); max-width: 40ch; font-size: 1.02rem; }
-.hero__actions { display: flex; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; }
-
-.btn {
-  display: inline-flex; align-items: center; gap: .6rem;
-  padding: .95rem 2.1rem; font-size: .74rem; letter-spacing: .2em;
-  text-transform: uppercase; text-decoration: none; cursor: pointer;
-  border: 1px solid var(--accent); background: var(--accent); color: #0d0d0d;
-  font-weight: 600; font-family: inherit;
-  transition: background .3s, color .3s, transform .2s;
-}
-.btn:hover { background: var(--accent-soft); transform: translateY(-2px); }
-.btn--ghost { background: transparent; color: var(--accent); }
-.btn--ghost:hover { background: var(--accent); color: #0d0d0d; }
-
-.hero__media { position: relative; }
-.hero__media img {
-  width: 100%; aspect-ratio: 4/5; object-fit: cover;
-  filter: saturate(1.05) contrast(1.04);
-}
-.hero__frame {
-  position: absolute; inset: 18px -18px -18px 18px;
-  border: 1px solid var(--line); pointer-events: none; z-index: -1;
-}
-.hero__tag {
-  position: absolute; bottom: 1.6rem; left: -1.6rem;
-  background: var(--ground); border: 1px solid var(--line);
-  padding: .9rem 1.4rem;
-}
-.hero__tag strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--accent); }
-.hero__tag span { font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
-
-/* ═══════════ BARRA DE CONFIANZA ═══════════ */
-.trust {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 45%), 1fr)); gap: 1px;
-  background: var(--line-soft); border-block: 1px solid var(--line-soft);
-}
-.trust div { background: var(--ground); padding: 1.7rem 1rem; text-align: center; }
-.trust b { display: block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
-.trust small { color: var(--ink-mute); font-size: .76rem; }
-
-/* ═══════════ SECCIONES ═══════════ */
-section { padding: clamp(2.8rem, 7vw, 6rem) 0; }
-.sec-head { text-align: center; margin-bottom: 3.4rem; }
-.sec-head h2 { font-size: clamp(2.2rem,4.4vw,3.4rem); margin: .7rem 0 .8rem; }
-.sec-head p { color: var(--ink-mute); max-width: 52ch; margin-inline: auto; }
-
-/* ═══════════ GRID DE PRODUCTOS ═══════════ */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
-  gap: clamp(1.2rem, 3vw, 2.2rem) clamp(.9rem, 2vw, 1.6rem);
-}
-.card { position: relative; text-decoration: none; color: inherit; display: block; }
-.card__media { position: relative; overflow: hidden; background: var(--surface); aspect-ratio: 1/1.1; }
-.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.3,1); }
-.card:hover .card__media img { transform: scale(1.07); }
-.card__badge {
-  position: absolute; top: .9rem; left: .9rem; z-index: 2;
-  background: var(--sale); color: #12100c;
-  font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
-  padding: .32rem .7rem; font-weight: 700;
-}
-.card__add {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  background: var(--accent); color: #0d0d0d; border: 0;
-  font-family: inherit; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
-  padding: .9rem; font-weight: 600; cursor: pointer;
-  transform: translateY(101%); transition: transform .35s cubic-bezier(.2,.7,.3,1);
-}
-.card:hover .card__add { transform: translateY(0); }
-.card__body { padding-top: 1rem; }
-.card__name { font-size: .93rem; margin-bottom: .35rem; }
-.card__price { display: flex; align-items: baseline; gap: .55rem; font-variant-numeric: tabular-nums; }
-.card__price b { color: var(--accent); font-weight: 600; }
-.card__price s { color: var(--ink-mute); font-size: .84rem; }
-.card__stars { color: var(--accent); font-size: .74rem; letter-spacing: .1em; margin-top: .3rem; }
-.card__stars span { color: var(--ink-mute); }
-
-
-/* TABS DE COLECCIONES */
-.tabnav { display:flex; justify-content:center; gap:2.4rem; border-bottom:1px solid var(--line-soft); margin-bottom:2.6rem; flex-wrap:wrap; }
-.tabnav button {
-  background:none; border:0; border-bottom:2px solid transparent; color:var(--ink-mute);
-  font-family:var(--font-display); font-size:1.5rem; padding:0 0 .8rem; cursor:pointer; transition:.25s;
-}
-.tabnav button:hover { color:var(--ink); }
-.tabnav button[aria-pressed="true"] { color:var(--accent); border-bottom-color:var(--accent); }
-.tabpane { display:none; }
-.tabpane.on { display:block; }
-
-/* CATEGORIAS */
-.cats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: clamp(.8rem, 2vw, 1.4rem);
-}
-.cat { position: relative; overflow: hidden; aspect-ratio: 3/4; text-decoration: none; display: block; }
-.cat img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.2,.7,.3,1); }
-.cat:hover img { transform: scale(1.06); }
-.cat::after { content:''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 8%, transparent 60%); }
-.cat__label { position: absolute; left: 1.6rem; bottom: 1.5rem; z-index: 2; }
-.cat__label h3 { font-size: 1.6rem; color: #fff; }
-.cat__label span { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
-
-/* ═══════════ UGC ═══════════ */
-.ugc-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(150px, 45%), 1fr));
-  gap: clamp(.5rem, 1.5vw, 1rem);
-}
-.ugc { position: relative; aspect-ratio: 9/16; overflow: hidden; background: var(--surface); cursor: pointer; }
-.ugc img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
-.ugc:hover img { transform: scale(1.06); }
-.ugc__play {
-  position: absolute; inset: 0; display: grid; place-items: center;
-  background: linear-gradient(to top, rgba(0,0,0,.6), transparent 55%);
-}
-.ugc__play i {
-  width: 46px; height: 46px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.75); display: grid; place-items: center;
-  color: #fff; font-style: normal; font-size: .7rem; backdrop-filter: blur(3px);
-  background: rgba(0,0,0,.28); padding-left: 3px;
-}
-.ugc__user { position: absolute; left: .7rem; bottom: .7rem; color: #fff; font-size: .68rem; letter-spacing: .06em; z-index: 2; }
-
-/* ═══════════ FRANJA EDITORIAL ═══════════ */
-.editorial {
-  background: var(--paper); color: var(--paper-ink);
-  display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0;
-}
-.editorial__img { height: 100%; }
-.editorial__img img { width: 100%; height: 100%; object-fit: cover; min-height: 460px; }
-.editorial__text { padding: clamp(2.5rem,5vw,5rem); }
-.editorial__text h2 { font-size: clamp(2rem,3.6vw,3rem); margin: .8rem 0 1.2rem; }
-.editorial__text .eyebrow { color: var(--accent-deep); }
-.editorial__text p { color: #57503f; max-width: 44ch; }
-.editorial__list { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; gap: .9rem; }
-.editorial__list li { display: flex; gap: .8rem; align-items: flex-start; font-size: .92rem; }
-.editorial__list b { color: var(--accent-deep); font-family: var(--font-display); font-size: 1.1rem; }
-
-/* ═══════════ PRODUCTO ═══════════ */
-.pdp { display: grid; grid-template-columns: 1.15fr .85fr; gap: 4rem; padding-top: 3.5rem; }
-.pdp__gallery { display: grid; grid-template-columns: 72px 1fr; gap: 1rem; align-items: start; }
-.pdp__thumbs { display: grid; gap: .7rem; }
-.pdp__thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; cursor: pointer; opacity: .55; border: 1px solid transparent; transition: opacity .25s, border-color .25s; }
-.pdp__thumbs img:hover, .pdp__thumbs img.on { opacity: 1; border-color: var(--accent); }
-.pdp__main { position: relative; background: var(--surface); }
-.pdp__main img { width: 100%; aspect-ratio: 1/1.15; object-fit: cover; }
-.pdp h1 { font-size: clamp(2.2rem,4vw,3.2rem); margin: .6rem 0 .9rem; }
-.pdp__rating { display: flex; align-items: center; gap: .6rem; color: var(--accent); font-size: .84rem; }
-.pdp__rating span { color: var(--ink-mute); }
-.pdp__price { display: flex; align-items: baseline; gap: .9rem; margin: 1.5rem 0; font-variant-numeric: tabular-nums; }
-.pdp__price b { font-size: 2.1rem; color: var(--accent); font-weight: 500; font-family: var(--font-display); }
-.pdp__price s { color: var(--ink-mute); }
-.pdp__price em { font-style: normal; background: var(--sale); color:#12100c; font-size: .66rem; letter-spacing:.1em; padding: .25rem .6rem; font-weight: 700; }
-.opt-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); margin: 1.6rem 0 .7rem; }
-.opts { display: flex; gap: .6rem; flex-wrap: wrap; }
-.opt {
-  padding: .7rem 1.3rem; border: 1px solid var(--line); background: transparent;
-  color: var(--ink); font-family: inherit; font-size: .82rem; cursor: pointer;
-  transition: border-color .25s, background .25s, color .25s;
-}
-.opt:hover { border-color: var(--accent); }
-.opt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0d0d0d; font-weight: 600; }
-.pdp__buy { display: grid; gap: .8rem; margin-top: 2rem; }
-.btn--full { justify-content: center; width: 100%; padding: 1.15rem; font-size: .8rem; }
-.msi {
-  border: 1px solid var(--line); padding: 1rem 1.2rem; margin-top: 1.2rem;
-  display: flex; gap: .9rem; align-items: center; font-size: .86rem;
-}
-.msi b { color: var(--accent); }
-.pdp__trust { display: grid; grid-template-columns: repeat(2,1fr); gap: .8rem; margin-top: 1.6rem; }
-.pdp__trust div { border: 1px solid var(--line-soft); padding: .9rem; font-size: .78rem; color: var(--ink-mute); }
-.pdp__trust b { display: block; color: var(--ink); font-size: .8rem; margin-bottom: .15rem; }
-
-details.acc { border-bottom: 1px solid var(--line-soft); }
-details.acc summary {
-  cursor: pointer; padding: 1.15rem 0; list-style: none;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: .82rem; letter-spacing: .14em; text-transform: uppercase;
-}
-details.acc summary::-webkit-details-marker { display: none; }
-details.acc summary::after { content: '+'; color: var(--accent); font-size: 1.2rem; }
-details.acc[open] summary::after { content: '−'; }
-details.acc p { color: var(--ink-mute); padding-bottom: 1.2rem; margin: 0; font-size: .9rem; }
-
-/* ═══════════ COLECCIÓN ═══════════ */
-.coll-head { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--line-soft); }
-.coll-head h1 { font-size: clamp(2.4rem,5vw,4rem); margin: .6rem 0 .5rem; }
-.coll-bar { display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 0; flex-wrap: wrap; gap: 1rem; }
-.chips { display: flex; gap: .6rem; flex-wrap: wrap; }
-.chip {
-  padding: .5rem 1.1rem; border: 1px solid var(--line); background: transparent;
-  color: var(--ink-mute); font-family: inherit; font-size: .74rem; letter-spacing: .1em;
-  text-transform: uppercase; cursor: pointer; transition: .25s;
-}
-.chip:hover { border-color: var(--accent); color: var(--ink); }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0d0d0d; font-weight: 600; }
-
-/* ═══════════ FOOTER ═══════════ */
-footer { background: var(--ground-2); border-top: 1px solid var(--line); padding: 4.5rem 0 2rem; margin-top: 2rem; }
-.foot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
-  gap: clamp(1.6rem, 3vw, 2.5rem);
-}
-.foot-grid h4 { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
-.foot-grid ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
-.foot-grid a { color: var(--ink-mute); text-decoration: none; font-size: .88rem; }
-.foot-grid a:hover { color: var(--accent); }
-.foot-brand { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .28em; text-transform: uppercase; margin-bottom: 1rem; }
-.foot-brand span { color: var(--accent); }
-.wa { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent) !important; font-weight: 600; }
-.foot-bottom {
-  margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-soft);
-  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-  font-size: .78rem; color: var(--ink-mute);
-}
-
-.page { display: none; }
-.page.on { display: block; }
-
-
-/* ═══════════ RESPONSIVE ═══════════ */
-
-/* Laptop chico / tablet horizontal */
-@media (max-width: 1200px) {
-  .grid { grid-template-columns: repeat(3,1fr); }
-  .ugc-strip { grid-template-columns: repeat(4,1fr); }
-  .nav { gap: 1.2rem; font-size: .72rem; }
-  .hero { gap: 2rem; }
-}
-
-/* Tablet */
-@media (max-width: 1000px) {
-  .hero { grid-template-columns: 1fr; padding: 3rem 0 2.5rem; min-height: auto; }
-  .hero__media { order: -1; }
-  .hero__frame { display: none; }
-  .hero__tag { left: auto; right: 1rem; bottom: 1rem; }
-  .pdp { grid-template-columns: 1fr; gap: 2.5rem; }
-  .editorial { grid-template-columns: 1fr; }
-  .editorial__img img { min-height: 300px; }
-  .cats { grid-template-columns: repeat(2,1fr); }
-  .trust { grid-template-columns: repeat(2,1fr); }
-  .foot-grid { grid-template-columns: repeat(2,1fr); }
-  .head { grid-template-columns: 1fr auto 1fr; }
-  .nav, .head-icons { display: none; }
-  .brand { text-align: center; grid-column: 1 / -1; }
-  section { padding: 4rem 0; }
-}
-
-/* Tablet vertical / movil grande */
-@media (max-width: 820px) {
-  .grid { grid-template-columns: repeat(2,1fr); }
-  .ugc-strip { grid-template-columns: repeat(3,1fr); }
-  .announce { gap: 1.2rem; font-size: .64rem; letter-spacing: .1em; }
-  .tabnav { gap: 1.4rem; }
-  .tabnav button { font-size: 1rem; }
-  .pdp__price b { font-size: 1.8rem; }
-}
-
-/* Movil */
-@media (max-width: 620px) {
-  .wrap { width: 92vw; }
-  .cats { grid-template-columns: 1fr; }
-  .ugc-strip { grid-template-columns: repeat(2,1fr); }
-  .trust { grid-template-columns: repeat(2,1fr); }
-  .trust div { padding: 1.1rem .6rem; }
-  .foot-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .foot-bottom { flex-direction: column; gap: .5rem; }
-  .pdp__gallery { grid-template-columns: 1fr; }
-  .pdp__thumbs { grid-auto-flow: column; grid-auto-columns: 1fr; }
-  .pdp__trust { grid-template-columns: 1fr; }
-  .hero__actions .btn, .hero__actions { width: 100%; }
-  .hero__actions .btn { justify-content: center; }
-  .sec-head h2 { font-size: 1.9rem; }
-  section { padding: 3rem 0; }
-  .editorial__text { padding: 2rem 1.5rem; }
-  .coll-bar { flex-direction: column; align-items: flex-start; }
-}
-
-/* Movil chico */
-@media (max-width: 400px) {
-  .grid { grid-template-columns: 1fr; }
-  .ugc-strip { grid-template-columns: repeat(2,1fr); }
-  .brand { font-size: 1.05rem; letter-spacing: .12em; }
-  .hero h1 { font-size: 2.6rem; }
-}
-
-
-/* Legibilidad minima en movil: nada de texto bajo 10px */
-@media (max-width: 620px) {
-  .card__badge { font-size: .70rem; padding: .3rem .6rem; }
-  .card__stars { font-size: .76rem; }
-  .trust small { font-size: .78rem; }
-  .cat__label span { font-size: .70rem; }
-  .eyebrow { font-size: .70rem; letter-spacing: .22em; }
-}
-@media (max-width: 400px) {
-}
-
-
-/* Enlaces de lista: area tactil comoda en movil (WCAG 2.2 target size) */
-@media (pointer: coarse) {
-  .foot-grid ul a, .fg ul a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
-    padding-block: .15rem;
-  }
-  .foot-grid ul, .fg ul { gap: .1rem; }
-  .nav a, .mnav a { padding-block: .5rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
-
-
-:root { --drawer-bg: #141310; --tabbar-bg: rgba(13,13,13,.97); }
-
-/* ═══════════════════════════════════════════════════════════
-   NAVEGACIÓN MÓVIL
-   Hamburguesa + drawer lateral + barra inferior (thumb zone)
-   ═══════════════════════════════════════════════════════════ */
-
-/* --- Botón hamburguesa --- */
-.burger {
-  display: none;
-  width: 48px; height: 48px;
-  align-items: center; justify-content: center;
-  background: none; border: 0; cursor: pointer;
-  color: var(--ink); padding: 0;
-}
-.burger span {
-  display: block; width: 22px; height: 2px;
-  background: currentColor; position: relative;
-  transition: background .2s;
-}
-.burger span::before,
-.burger span::after {
-  content: ''; position: absolute; left: 0;
-  width: 22px; height: 2px; background: currentColor;
-  transition: transform .28s ease, top .28s ease;
-}
-.burger span::before { top: -7px; }
-.burger span::after  { top: 7px; }
-.burger[aria-expanded="true"] span { background: transparent; }
-.burger[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
-.burger[aria-expanded="true"] span::after  { top: 0; transform: rotate(-45deg); }
-.burger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-/* --- Fondo oscuro --- */
-.scrim {
-  position: fixed; inset: 0; z-index: 1100;
-  background: rgba(0,0,0,.6);
-  opacity: 0; visibility: hidden;
-  transition: opacity .3s ease, visibility .3s ease;
-  backdrop-filter: blur(2px);
-}
-.scrim.open { opacity: 1; visibility: visible; }
-
-/* --- Drawer lateral --- */
-.drawer {
-  position: fixed; top: 0; bottom: 0; left: 0; z-index: 1200;
-  width: min(88vw, 400px);
-  background: var(--drawer-bg);
-  transform: translateX(-100%);
-  transition: transform .32s cubic-bezier(.32,.72,0,1);
-  display: flex; flex-direction: column;
-  overscroll-behavior: contain;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 4px 0 32px rgba(0,0,0,.5);
-}
-.drawer.open { transform: translateX(0); }
-
-.drawer__top {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.1rem 1.25rem;
-  border-bottom: 1px solid var(--line-soft, rgba(255,255,255,.1));
-  flex-shrink: 0;
-}
-.drawer__close {
-  width: 44px; height: 44px; background: none; border: 0;
-  color: var(--ink); font-size: 1.6rem; cursor: pointer; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-}
-.drawer__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.drawer__body { flex: 1; overflow-y: auto; padding: .5rem 0 1.5rem; }
-
-.drawer__link {
-  display: flex; align-items: center; justify-content: space-between;
-  min-height: 54px;
-  padding: .85rem 1.25rem;
-  color: var(--ink); text-decoration: none;
-  font-size: 1.05rem; font-weight: 500;
-  border-bottom: 1px solid var(--line-soft, rgba(255,255,255,.07));
-}
-.drawer__link:active { background: rgba(255,255,255,.06); }
-.drawer__link span { color: var(--ink-mute); font-size: .85rem; }
-
-.drawer__sub {
-  padding: .5rem 1.25rem .5rem 2rem;
-  display: grid; gap: 2px;
-}
-.drawer__sub a {
-  display: flex; align-items: center; min-height: 46px;
-  color: var(--ink-mute); text-decoration: none; font-size: .95rem;
-}
-.drawer__sub a:active { color: var(--accent); }
-
-.drawer__head {
-  padding: 1.4rem 1.25rem .5rem;
-  font-size: .7rem; font-weight: 700; letter-spacing: .2em;
+  font-size: .75rem; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase; color: var(--accent);
 }
-.drawer__foot {
-  padding: 1.2rem 1.25rem;
-  border-top: 1px solid var(--line-soft, rgba(255,255,255,.1));
-  display: grid; gap: .6rem; flex-shrink: 0;
-}
-.drawer__wa {
-  display: flex; align-items: center; gap: .6rem; min-height: 48px;
-  color: var(--accent); text-decoration: none; font-weight: 700; font-size: 1rem;
-}
 
-/* --- Barra inferior (thumb zone) --- */
-.tabbar {
-  display: none;
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 900;
-  background: var(--tabbar-bg);
-  border-top: 1px solid var(--line-soft, rgba(255,255,255,.12));
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-.tabbar__in { display: grid; grid-template-columns: repeat(4, 1fr); }
-.tabbar a {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; min-height: 56px; padding: .4rem .2rem;
-  color: var(--ink-mute); text-decoration: none;
-  font-size: .68rem; font-weight: 600; letter-spacing: .04em;
-}
-.tabbar a svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.6; }
-.tabbar a[aria-current="page"] { color: var(--accent); }
-.tabbar a:active { color: var(--accent); }
-.tabbar__badge {
-  position: absolute; transform: translate(11px, -9px);
-  background: var(--accent); color: #000;
-  font-size: .6rem; font-weight: 800;
-  min-width: 16px; height: 16px; border-radius: 8px;
-  display: grid; place-items: center; padding: 0 3px;
-}
-
-/* --- Activación en móvil/tablet --- */
-@media (max-width: 1000px) {
-  .burger { display: flex; }
-  .tabbar { display: block; }
-  body { padding-bottom: 56px; }   /* espacio para la barra inferior */
-}
-@media (min-width: 1001px) {
-  .drawer, .scrim { display: none; }
-}
-
-/* Bloquea el scroll del fondo con el drawer abierto */
-body.nav-open { overflow: hidden; }
-
-/* ═══════════ LEGIBILIDAD MÓVIL (base 16px, sin auto-zoom en iOS) ═══════════ */
-@media (max-width: 620px) {
-  body { font-size: 16px; line-height: 1.6; }
-  input, select, textarea { font-size: 16px; }   /* evita el zoom automático de iOS */
-
-  .card__name, .card__n { font-size: 1rem; line-height: 1.35; }
-  .card__price b, .card__p b { font-size: 1.15rem; }
-  .card__price s, .card__p s { font-size: .95rem; }
-  .card__stars, .card__r { font-size: .88rem; }
-  .card__badge, .tag { font-size: .78rem; padding: .32rem .6rem; }
-
-  .eyebrow, .kicker { font-size: .78rem; letter-spacing: .18em; }
-  .sec-head p, .hero__lead, .hero__sub { font-size: 1rem; }
-  .trust small, .strip small { font-size: .92rem; }
-  .trust b, .strip b { font-size: .95rem; }
-
-  .drawer__link { font-size: 1.08rem; }
-  .foot-grid a, .fg a { font-size: 1rem; }
-  .foot-grid h4, .fg h4 { font-size: .82rem; }
-
-  details.acc summary, details.ac summary { font-size: .92rem; }
-  details.acc p, details.ac p { font-size: 1rem; line-height: 1.6; }
-
-  .opt { font-size: 1rem; min-height: 48px; padding: .8rem 1.3rem; }
-  .chip { font-size: .88rem; min-height: 44px; }
-  .btn { font-size: .88rem; min-height: 50px; }
-
-  .pdp__trust div, .tgrid div { font-size: .92rem; }
-  .pdp__trust b, .tgrid b { font-size: .92rem; }
-  .msi { font-size: .98rem; }
-  .ugc__user, .ugc__u { font-size: .82rem; }
-  .cat__label span, .cat__t span { font-size: .8rem; }
-  .announce { font-size: .78rem; }
-}
-
-
-/* ═══════════ Safe areas + offset dinámico de la barra ═══════════ */
+/* ═══════════ BARRA DE PREVIEW ═══════════ */
 .ctl {
+  position: fixed; inset: 0 0 auto 0; z-index: 1000;
+  background: #14130f; color: #fff;
   padding-top: env(safe-area-inset-top, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
 }
-.wrap {
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
+.ctl__in {
+  display: flex; align-items: center; justify-content: center; gap: 1.4rem;
+  padding: .5rem 1rem; flex-wrap: wrap;
 }
-footer { padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px)); }
+.ctl__lab { font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #8d887c; }
+.ctl__sep { width: 1px; height: 20px; background: rgba(255,255,255,.18); }
+.ctl__g { display: flex; align-items: center; gap: .5rem; }
+.seg { display: flex; gap: 2px; background: rgba(255,255,255,.09); padding: 2px; border-radius: var(--r); }
+.seg button {
+  padding: .5rem 1rem; border: 0; background: transparent; color: #cfcabd;
+  font-family: inherit; font-size: .76rem; font-weight: 600; cursor: pointer;
+  border-radius: 4px; transition: background .18s, color .18s; white-space: nowrap;
+}
+.seg button:hover { color: #fff; }
+.seg button[aria-pressed="true"] { background: #fff; color: #14130f; }
+.seg button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.tones { display: flex; gap: .4rem; }
+.tones button {
+  width: 26px; height: 26px; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 2px solid rgba(255,255,255,.3); transition: transform .18s, border-color .18s;
+}
+.tones button:hover { transform: scale(1.12); }
+.tones button[aria-pressed="true"] { border-color: #fff; transform: scale(1.12); }
+.t-oro { background: #a8842c; } .t-ambar { background: #a35d2a; } .t-grafito { background: #2f2f2f; }
 
-/* El contenido arranca bajo la barra fija, cuya altura se mide en JS.
-   Sin esto, la barra tapa el header y la hamburguesa deja de responder. */
-body { padding-top: var(--ctl-h, 56px); }
-.announce, .ticker { margin-top: 0 !important; }
+/* ═══════════ ANUNCIO ═══════════ */
+.topbar {
+  background: var(--ink); color: #fff;
+  font-size: .78rem; letter-spacing: .02em;
+  display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+  padding: .6rem 1rem; text-align: center;
+}
+.topbar b { color: #e8d9ae; font-weight: 600; }
 
-/* El header sticky debe quedar por debajo de la barra de preview */
-.head, .hd { position: relative; z-index: 1; }
+/* ═══════════ HEADER ═══════════ */
+.hdr {
+  position: sticky; top: var(--ctl-h, 52px); z-index: 90;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: .9rem 0; }
+.logo {
+  font-family: var(--f-display); font-weight: 800;
+  font-size: 1.25rem; letter-spacing: -.02em; text-decoration: none; white-space: nowrap;
+}
+.logo em { font-style: normal; color: var(--accent); }
+.nav { display: flex; gap: 1.7rem; }
+.nav > a {
+  font-size: .9rem; font-weight: 500; text-decoration: none; color: var(--ink);
+  padding: .4rem 0; position: relative; white-space: nowrap;
+}
+.nav > a::after {
+  content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px;
+  background: var(--accent); transition: right .28s ease;
+}
+.nav > a:hover::after { right: 0; }
+.hdr__act { display: flex; align-items: center; gap: .4rem; }
+.icobtn {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  background: none; border: 0; cursor: pointer; color: var(--ink); border-radius: var(--r);
+}
+.icobtn:hover { background: var(--bg-warm); }
+.icobtn svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.bagcount {
+  position: absolute; transform: translate(12px,-11px);
+  background: var(--accent); color: #fff; font-size: .68rem; font-weight: 700;
+  min-width: 18px; height: 18px; border-radius: 9px; display: grid; place-items: center;
+}
+.burger { display: none; }
 
+/* ═══════════ BOTONES ═══════════ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-family: inherit; font-size: .92rem; font-weight: 600;
+  padding: .95rem 1.9rem; border-radius: var(--r);
+  border: 1.5px solid var(--accent); background: var(--accent); color: #fff;
+  text-decoration: none; cursor: pointer; min-height: 50px;
+  transition: background .2s, border-color .2s, transform .12s;
+}
+.btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn:active { transform: translateY(1px); }
+.btn--out { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn--out:hover { background: var(--ink); color: #fff; }
+.btn--w { width: 100%; }
 
-/* Enlaces "Ver todo" de cabecera de seccion: area tactil completa */
+/* ═══════════ HERO ═══════════ */
+.hero { padding: clamp(2rem,5vw,4rem) 0 clamp(2.5rem,5vw,4.5rem); }
+.hero__in { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem,5vw,4.5rem); align-items: center; }
+.hero h1 { font-size: clamp(2.4rem,5.6vw,4rem); margin: 1rem 0 1.2rem; }
+.hero h1 span { color: var(--accent); }
+.hero__lead { color: var(--ink-2); font-size: 1.08rem; max-width: 42ch; }
+.hero__cta { display: flex; gap: .8rem; margin-top: 2rem; flex-wrap: wrap; }
+.hero__proof { display: flex; gap: 2rem; margin-top: 2.4rem; padding-top: 1.6rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.hero__proof div b { display: block; font-family: var(--f-num); font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+.hero__proof div span { font-size: .82rem; color: var(--ink-3); }
+.hero__img { position: relative; border-radius: var(--r-lg); overflow: hidden; background: var(--bg-warm); }
+.hero__img img { width: 100%; aspect-ratio: 4/3.4; object-fit: cover; }
+
+/* ═══════════ CINTA DE CONFIANZA ═══════════ */
+.trust { background: var(--bg-warm); border-block: 1px solid var(--line); }
+.trust__in { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(210px,100%),1fr)); gap: 1px; }
+.trust__i { padding: 1.5rem 1.2rem; display: flex; gap: .9rem; align-items: flex-start; }
+.trust__i svg { width: 24px; height: 24px; flex-shrink: 0; stroke: var(--accent); fill: none; stroke-width: 1.5; margin-top: 2px; }
+.trust__i b { display: block; font-size: .95rem; font-weight: 600; margin-bottom: .1rem; }
+.trust__i span { font-size: .85rem; color: var(--ink-3); line-height: 1.45; }
+
+/* ═══════════ SECCIONES ═══════════ */
+section { padding: clamp(3rem,7vw,5.5rem) 0; }
+.shead { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.4rem; flex-wrap: wrap; }
+.shead h2 { font-size: clamp(1.8rem,3.8vw,2.7rem); }
+.shead p { color: var(--ink-2); margin-top: .6rem; max-width: 52ch; }
+.shead__link { font-size: .9rem; font-weight: 600; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
+.shead__link:hover { color: var(--accent-deep); }
+
+/* ═══════════ GRID DE PRODUCTOS — 3 desktop / 2 móvil ═══════════ */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem,2.4vw,2rem); }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } }
+
+.card { text-decoration: none; color: inherit; display: block; }
+.card__m {
+  position: relative; overflow: hidden; border-radius: var(--r-lg);
+  background: var(--bg-warm); aspect-ratio: 1/1.08; margin-bottom: .9rem;
+}
+.card__m img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.3,1); }
+.card:hover .card__m img { transform: scale(1.04); }
+.tag {
+  position: absolute; top: .7rem; left: .7rem; z-index: 2;
+  background: var(--sale); color: #fff; font-size: .72rem; font-weight: 700;
+  padding: .3rem .55rem; border-radius: 4px;
+}
+.tag--new { background: var(--ink); }
+.qa {
+  position: absolute; left: .7rem; right: .7rem; bottom: .7rem;
+  background: #fff; color: var(--ink); border: 1px solid var(--line);
+  font-family: inherit; font-size: .86rem; font-weight: 600;
+  padding: .7rem; border-radius: var(--r); cursor: pointer; min-height: 44px;
+  opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s;
+}
+.card:hover .qa { opacity: 1; transform: translateY(0); }
+.card__t { font-size: .98rem; font-weight: 500; margin-bottom: .3rem; line-height: 1.35; }
+.card__r { display: flex; align-items: center; gap: .35rem; font-size: .82rem; color: var(--ink-3); margin-bottom: .35rem; }
+.card__r i { color: var(--accent); font-style: normal; letter-spacing: -.05em; }
+.card__p { display: flex; align-items: baseline; gap: .5rem; font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+.card__p b { font-size: 1.05rem; font-weight: 700; }
+.card__p s { color: var(--ink-3); font-size: .88rem; }
+.card__sz { font-size: .78rem; color: var(--ink-3); margin-top: .3rem; }
+
+/* ═══════════ CATEGORÍAS ═══════════ */
+.cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px,100%),1fr)); gap: clamp(.8rem,2vw,1.4rem); }
+.cat { position: relative; display: block; text-decoration: none; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 3/3.6; }
+.cat img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.3,1); }
+.cat:hover img { transform: scale(1.05); }
+.cat::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,.72), transparent 55%); }
+.cat__l { position: absolute; left: 1.2rem; right: 1.2rem; bottom: 1.1rem; z-index: 2; color: #fff; }
+.cat__l h3 { font-size: 1.35rem; margin-bottom: .15rem; }
+.cat__l span { font-size: .82rem; opacity: .88; }
+
+/* ═══════════ EDITORIAL ═══════════ */
+.edi { background: var(--bg-warm); }
+.edi__in { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,5vw,4rem); align-items: center; }
+.edi__img { border-radius: var(--r-lg); overflow: hidden; }
+.edi__img img { width: 100%; aspect-ratio: 4/3.2; object-fit: cover; }
+.edi h2 { font-size: clamp(1.7rem,3.4vw,2.5rem); margin: .8rem 0 1.1rem; }
+.edi ul { list-style: none; padding: 0; margin: 1.6rem 0 0; display: grid; gap: 1rem; }
+.edi li { display: flex; gap: .8rem; align-items: flex-start; }
+.edi li svg { width: 20px; height: 20px; flex-shrink: 0; stroke: var(--accent); fill: none; stroke-width: 2; margin-top: 3px; }
+.edi li b { font-weight: 600; }
+.edi li span { color: var(--ink-2); }
+
+/* ═══════════ RESEÑAS ═══════════ */
+.revs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px,100%),1fr)); gap: 1.2rem; }
+.rev { border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.5rem; background: #fff; }
+.rev__s { color: var(--accent); font-size: .9rem; letter-spacing: -.05em; margin-bottom: .7rem; }
+.rev__t { font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; }
+.rev__a { display: flex; align-items: center; gap: .6rem; font-size: .85rem; color: var(--ink-3); }
+.rev__a b { color: var(--ink); font-weight: 600; }
+.rev__v { color: var(--ok); font-size: .78rem; display: inline-flex; align-items: center; gap: .25rem; }
+
+/* ═══════════ PDP ═══════════ */
+.pdp { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem,4vw,3.5rem); padding-top: 2.5rem; }
+.gal { display: grid; grid-template-columns: 78px 1fr; gap: 1rem; align-items: start; }
+.gal__t { display: grid; gap: .6rem; }
+.gal__t button {
+  padding: 0; border: 1.5px solid transparent; background: var(--bg-warm);
+  border-radius: var(--r); overflow: hidden; cursor: pointer; aspect-ratio: 1;
+}
+.gal__t button.on { border-color: var(--accent); }
+.gal__t img { width: 100%; height: 100%; object-fit: cover; }
+.gal__m { border-radius: var(--r-lg); overflow: hidden; background: var(--bg-warm); }
+.gal__m img { width: 100%; aspect-ratio: 1/1.1; object-fit: cover; }
+
+.pdp h1 { font-size: clamp(1.9rem,3.6vw,2.6rem); margin: .5rem 0 .7rem; }
+.pdp__r { display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: var(--ink-2); margin-bottom: 1.3rem; }
+.pdp__r i { color: var(--accent); font-style: normal; letter-spacing: -.05em; }
+.pdp__r a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.pdp__pr { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; font-family: var(--f-num); font-variant-numeric: tabular-nums; margin-bottom: .4rem; }
+.pdp__pr b { font-size: 2.1rem; font-weight: 700; letter-spacing: -.02em; }
+.pdp__pr s { color: var(--ink-3); font-size: 1.05rem; }
+.pdp__pr em { font-style: normal; background: var(--sale); color: #fff; font-size: .78rem; font-weight: 700; padding: .25rem .5rem; border-radius: 4px; }
+.pdp__tax { font-size: .82rem; color: var(--ink-3); }
+
+.olab { font-size: .85rem; font-weight: 600; margin: 1.6rem 0 .6rem; display: flex; justify-content: space-between; }
+.olab span { color: var(--ink-3); font-weight: 400; }
+.opts { display: flex; gap: .5rem; flex-wrap: wrap; }
+.opt {
+  min-height: 48px; padding: .7rem 1.3rem; border: 1.5px solid var(--line);
+  background: #fff; color: var(--ink); font-family: inherit; font-size: .95rem;
+  border-radius: var(--r); cursor: pointer; transition: border-color .2s, background .2s;
+}
+.opt:hover { border-color: var(--ink-3); }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+
+.buy { display: grid; gap: .7rem; margin-top: 1.8rem; }
+.msi {
+  display: flex; gap: .8rem; align-items: center; margin-top: 1.2rem;
+  border: 1px solid var(--accent-line); background: var(--accent-soft);
+  border-radius: var(--r); padding: .95rem 1.1rem; font-size: .92rem;
+}
+.msi b { font-weight: 700; }
+.pdpt { display: grid; grid-template-columns: repeat(2,1fr); gap: .7rem; margin-top: 1.4rem; }
+.pdpt div { display: flex; gap: .6rem; align-items: flex-start; font-size: .86rem; color: var(--ink-2); }
+.pdpt svg { width: 19px; height: 19px; flex-shrink: 0; stroke: var(--accent); fill: none; stroke-width: 1.6; margin-top: 2px; }
+.pdpt b { display: block; color: var(--ink); font-weight: 600; }
+
+details.ac { border-top: 1px solid var(--line); }
+details.ac summary {
+  list-style: none; cursor: pointer; padding: 1.1rem 0; min-height: 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .98rem; font-weight: 600;
+}
+details.ac summary::-webkit-details-marker { display: none; }
+details.ac summary::after { content: '+'; color: var(--accent); font-size: 1.3rem; font-weight: 400; }
+details.ac[open] summary::after { content: '−'; }
+details.ac p { color: var(--ink-2); padding-bottom: 1.2rem; font-size: .95rem; }
+
+/* ═══════════ COMPARATIVA ═══════════ */
+.vs { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.vs__sc { overflow-x: auto; }
+.vs table { width: 100%; border-collapse: collapse; min-width: 460px; }
+.vs th, .vs td { padding: .95rem 1.1rem; text-align: left; border-bottom: 1px solid var(--line-soft); font-size: .92rem; }
+.vs thead th { background: var(--bg-warm); font-weight: 700; font-size: .85rem; }
+.vs thead th:nth-child(2) { color: var(--accent); }
+.vs tbody tr:last-child td { border-bottom: 0; }
+.vs .y { color: var(--ok); font-weight: 600; }
+.vs .n { color: var(--ink-3); }
+
+/* ═══════════ COLECCIÓN ═══════════ */
+.chead { padding: 2.5rem 0 1.5rem; }
+.chead h1 { font-size: clamp(2rem,4.4vw,3.2rem); margin: .5rem 0 .6rem; }
+.chead p { color: var(--ink-2); max-width: 58ch; }
+.fbar { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; border-block: 1px solid var(--line); flex-wrap: wrap; }
+.chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+.chip {
+  min-height: 44px; padding: .55rem 1.1rem; border: 1.5px solid var(--line);
+  background: #fff; color: var(--ink-2); font-family: inherit; font-size: .88rem;
+  border-radius: 100px; cursor: pointer; transition: .2s;
+}
+.chip:hover { border-color: var(--ink-3); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600; }
+
+/* ═══════════ FOOTER ═══════════ */
+footer { background: var(--bg-warm); border-top: 1px solid var(--line); margin-top: 3rem; padding: clamp(2.5rem,5vw,4rem) 0 2rem; }
+.fg { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: clamp(1.5rem,3vw,2.5rem); }
+.fg h4 { font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 1rem; }
+.fg ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .2rem; }
+.fg a { color: var(--ink-2); text-decoration: none; font-size: .93rem; display: inline-flex; align-items: center; min-height: 40px; }
+.fg a:hover { color: var(--accent); }
+.fwa { color: var(--accent) !important; font-weight: 600; }
+.fbot { margin-top: 2.5rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: .85rem; color: var(--ink-3); }
+
+/* ═══════════ NAV MÓVIL ═══════════ */
+.scrim { position: fixed; inset: 0; z-index: 1100; background: rgba(20,19,15,.5); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+.scrim.open { opacity: 1; visibility: visible; }
+.drawer {
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 1200; width: min(86vw, 380px);
+  background: #fff; transform: translateX(-100%);
+  transition: transform .32s cubic-bezier(.32,.72,0,1);
+  display: flex; flex-direction: column; overscroll-behavior: contain;
+  padding-top: env(safe-area-inset-top,0); padding-bottom: env(safe-area-inset-bottom,0);
+}
+.drawer.open { transform: translateX(0); }
+.drawer__h { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--line); }
+.drawer__b { flex: 1; overflow-y: auto; padding: .5rem 0 1.5rem; }
+.drawer__g { padding: 1.3rem 1.2rem .4rem; font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.drawer__s { display: grid; padding: 0 1.2rem; }
+.drawer__s a { display: flex; justify-content: space-between; align-items: center; min-height: 48px; color: var(--ink-2); text-decoration: none; font-size: 1rem; }
+.drawer__s a span { color: var(--ink-3); font-size: .85rem; }
+.drawer__l { display: flex; align-items: center; min-height: 54px; padding: .5rem 1.2rem; color: var(--ink); text-decoration: none; font-size: 1.05rem; font-weight: 500; border-top: 1px solid var(--line-soft); }
+.drawer__f { padding: 1.1rem 1.2rem; border-top: 1px solid var(--line); }
+.drawer__f a { display: flex; align-items: center; gap: .5rem; min-height: 48px; color: var(--accent); font-weight: 600; text-decoration: none; }
+body.locked { overflow: hidden; }
+
+@media (max-width: 900px) {
+  .burger { display: grid; }
+  .nav { display: none; }
+  .hero__in, .edi__in, .pdp { grid-template-columns: 1fr; }
+  .hero__img { order: -1; }
+  .gal { grid-template-columns: 1fr; }
+  .gal__t { grid-auto-flow: column; grid-auto-columns: 1fr; }
+  .fg { grid-template-columns: repeat(2,1fr); }
+  .topbar { gap: 1.2rem; font-size: .72rem; }
+}
+@media (max-width: 560px) {
+  .fg { grid-template-columns: 1fr; }
+  .pdpt { grid-template-columns: 1fr; }
+  .hero__cta { flex-direction: column; }
+  .hero__cta .btn { width: 100%; }
+  .fbar { flex-direction: column; align-items: flex-start; }
+  .ctl__lab, .ctl__sep { display: none; }
+  .ctl__in { gap: .7rem; }
+  .seg button { padding: .5rem .7rem; font-size: .72rem; }
+}
+
+/* ═══════════ ANIMACIÓN AL SCROLL ═══════════ */
+.rv { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1); }
+.rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation: none !important; transition: none !important; }
+  .rv { opacity: 1; transform: none; }
+}
+@media (hover: none) {
+  .qa { opacity: 1; transform: none; }
+  .card:hover .card__m img, .cat:hover img { transform: none; }
+}
+.page { display: none; } .page.on { display: block; }
+
+/* Controles del preview: area tactil comoda en movil */
 @media (pointer: coarse) {
-  .sh a, .sec-head a {
-    display: inline-flex; align-items: center;
-    min-height: 44px; padding-block: .3rem;
-  }
+  .seg button { min-height: 44px; }
+  .tones button { width: 36px; height: 36px; }
+  .ctl__lab { font-size: .7rem; }
 }
 
 </style>
 
-<!-- ══════════ BARRA DE CONTROL ══════════ -->
 <div class="ctl">
   <div class="ctl__in">
-    <div class="ctl__pages">
-      <button data-page="p-home" aria-pressed="true">Home</button>
-      <button data-page="p-prod" aria-pressed="false">Producto</button>
-      <button data-page="p-coll" aria-pressed="false">Colección</button>
+    <div class="seg" id="pages">
+      <button data-p="home" aria-pressed="true">Home</button>
+      <button data-p="prod" aria-pressed="false">Producto</button>
+      <button data-p="coll" aria-pressed="false">Colección</button>
     </div>
     <div class="ctl__sep"></div>
-    <div class="ctl__grp">
-      <span class="ctl__lab">Color</span>
-      <div class="ctl__sw">
-        <button class="p-oro"   data-p="oro"   aria-pressed="true"  title="Oro Real" aria-label="Paleta Oro Real"></button>
-        <button class="p-onix"  data-p="onix"  aria-pressed="false" title="Ónix &amp; Champagne" aria-label="Paleta Ónix y Champagne"></button>
-        <button class="p-cacao" data-p="cacao" aria-pressed="false" title="Cacao &amp; Oro Rosa" aria-label="Paleta Cacao y Oro Rosa"></button>
+    <div class="ctl__g">
+      <span class="ctl__lab">Acento</span>
+      <div class="tones" id="tones">
+        <button class="t-oro" data-t="oro" aria-pressed="true" title="Oro clásico" aria-label="Oro clásico"></button>
+        <button class="t-ambar" data-t="ambar" aria-pressed="false" title="Ámbar cálido" aria-label="Ámbar cálido"></button>
+        <button class="t-grafito" data-t="grafito" aria-pressed="false" title="Grafito" aria-label="Grafito"></button>
       </div>
     </div>
     <div class="ctl__sep"></div>
-    <div class="ctl__grp">
-      <span class="ctl__lab">Fuente</span>
-      <div class="ctl__fonts">
-        <button data-f="slab"   aria-pressed="true"  style="font-family:'Bitter','Rockwell','Palatino Linotype',serif">Slab</button>
-        <button data-f="didone" aria-pressed="false" style="font-family:'Playfair Display','Didot','Bodoni MT',Georgia,serif">Didone</button>
-        <button data-f="geom"   aria-pressed="false" style="font-family:'Poppins','Futura','Century Gothic',sans-serif">Geom</button>
+    <div class="ctl__g">
+      <span class="ctl__lab">Letra</span>
+      <div class="seg" id="fonts">
+        <button data-f="clara" aria-pressed="true">Clara</button>
+        <button data-f="solida" aria-pressed="false">Sólida</button>
+        <button data-f="tecnica" aria-pressed="false">Técnica</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="announce">
-  <span>Entrega 2–4 días hábiles</span>
-  <span>Envío gratis desde $600</span>
-  <span>Pagos seguros</span>
+<div class="topbar">
+  <span><b>Envío gratis</b> en compras desde $600</span>
+  <span>Entrega en <b>2–4 días</b></span>
+  <span><b>30 días</b> para devolver</span>
 </div>
 
-<header class="wrap head">
-  <nav class="nav">
-    <a href="#">Oro 18k</a><a href="#">Plata</a><a href="#">Paquetes</a><a href="#">Personalizados</a><a href="#">Relojes</a><a href="#">Más vendidos</a>
-  </nav>
-  <div class="brand">Rey <span>Joyero</span></div>
-  <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><span></span></button>
-  <div class="head-icons"><span>Buscar</span><span>Cuenta</span><span>Bolsa (0)</span></div>
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <button class="icobtn burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a class="logo" href="#">Rey<em>Joyero</em></a>
+    <nav class="nav">
+      <a href="#">Oro 18k</a><a href="#">Plata</a><a href="#">Paquetes</a>
+      <a href="#">Personalizados</a><a href="#">Relojes</a><a href="#">Más vendidos</a>
+    </nav>
+    <div class="hdr__act">
+      <button class="icobtn" aria-label="Buscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icobtn" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg></button>
+      <button class="icobtn" aria-label="Bolsa"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><i class="bagcount num">0</i></button>
+    </div>
+  </div>
 </header>
 
-<!-- ════════════════════ HOME ════════════════════ -->
-<main class="page on" id="p-home">
-  <div class="wrap hero">
-    <div class="hero__text">
-      <span class="eyebrow">Oro laminado · Baño 18k</span>
-      <h1>El oro que<br><em>se hereda</em></h1>
-      <p class="hero__lead">Cadenas, pulsos y dijes con baño de oro de 18 quilates. Piezas que aguantan el uso diario y el paso de los años.</p>
-      <div class="hero__actions">
-        <a class="btn" href="#">Ver colección</a>
-        <a class="btn btn--ghost" href="#">Paquetes desde $899</a>
+<!-- ═════════════ HOME ═════════════ -->
+<main class="page on" id="home">
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <span class="eyebrow">Oro laminado · Baño 18k</span>
+        <h1>El oro que <span>sí dura</span></h1>
+        <p class="hero__lead">Cadenas, pulsos y dijes con baño de oro de 18 quilates sobre acero inoxidable. No se destiñen, no manchan la piel.</p>
+        <div class="hero__cta">
+          <a class="btn" href="#">Ver catálogo</a>
+          <a class="btn btn--out" href="#">Paquetes desde $899</a>
+        </div>
+        <div class="hero__proof">
+          <div><b class="num">+10,000</b><span>Clientes</span></div>
+          <div><b class="num">4.8</b><span>De calificación</span></div>
+          <div><b class="num">30</b><span>Días de garantía</span></div>
+        </div>
+      </div>
+      <div class="hero__img">
+        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=1100" alt="Hombre con cadena de oro laminado 18k de El Rey Joyero" fetchpriority="high">
       </div>
     </div>
-    <div class="hero__media">
-      <div class="hero__frame"></div>
-      <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=900" alt="Modelo con cadena de oro laminado de El Rey Joyero">
-      <div class="hero__tag"><strong>+10,000</strong><span>Clientes satisfechos</span></div>
-    </div>
-  </div>
+  </section>
 
   <div class="trust">
-    <div><b>Envío gratis</b><small>En compras desde $600</small></div>
-    <div><b>2–4 días</b><small>Entrega en todo México</small></div>
-    <div><b>Meses sin intereses</b><small>Con Mercado Pago</small></div>
-    <div><b>Garantía real</b><small>30 días de devolución</small></div>
+    <div class="wrap trust__in">
+      <div class="trust__i"><svg viewBox="0 0 24 24"><path d="M3 8h13v9H3z"/><path d="M16 11h4l1 3v3h-5z"/><circle cx="7" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/></svg><div><b>Envío gratis</b><span>En compras desde $600, a todo México</span></div></div>
+      <div class="trust__i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Entrega 2–4 días</b><span>Con número de rastreo</span></div></div>
+      <div class="trust__i"><svg viewBox="0 0 24 24"><path d="M4 7h16v11H4z"/><path d="M4 11h16"/></svg><div><b>Meses sin intereses</b><span>Hasta 12 MSI con Mercado Pago</span></div></div>
+      <div class="trust__i"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><div><b>Garantía 30 días</b><span>Devolución sin preguntas</span></div></div>
+    </div>
   </div>
 
-  <section class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Lo más vendido</span>
-      <h2>Cadenas que no pasan de moda</h2>
-      <p>Los tejidos clásicos —cartier, barbada, torzal— en baño de oro 18k sobre acero inoxidable.</p>
+  <section class="wrap rv">
+    <div class="shead">
+      <div>
+        <span class="eyebrow">Lo más vendido</span>
+        <h2>Las que más salen</h2>
+        <p>Tejidos clásicos en baño de oro 18k. Todas incluyen estuche y garantía.</p>
+      </div>
+      <a class="shead__link" href="#">Ver las 30 cadenas →</a>
     </div>
     <div class="grid">
-      <a class="card" href="#">
-        <div class="card__media">
-          <span class="card__badge">−13%</span>
-          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier">
-          <button class="card__add">Agregar</button>
-        </div>
-        <div class="card__body">
-          <div class="card__name">Cadena Cartier</div>
-          <div class="card__price"><b>$699</b><s>$800</s></div>
-          <div class="card__stars">★★★★★ <span>(25)</span></div>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <div class="card__media">
-          <span class="card__badge">−33%</span>
-          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada">
-          <button class="card__add">Agregar</button>
-        </div>
-        <div class="card__body">
-          <div class="card__name">Cadena Barbada</div>
-          <div class="card__price"><b>$599</b><s>$900</s></div>
-          <div class="card__stars">★★★★★ <span>(41)</span></div>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <div class="card__media">
-          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino">
-          <button class="card__add">Agregar</button>
-        </div>
-        <div class="card__body">
-          <div class="card__name">Cadena Tejido Bizantino</div>
-          <div class="card__price"><b>$899</b></div>
-          <div class="card__stars">★★★★★ <span>(18)</span></div>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <div class="card__media">
-          <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=600" alt="Cadena Mónaco Chain">
-          <button class="card__add">Agregar</button>
-        </div>
-        <div class="card__body">
-          <div class="card__name">Cadena Mónaco Chain</div>
-          <div class="card__price"><b>$1,800</b></div>
-          <div class="card__stars">★★★★☆ <span>(12)</span></div>
-        </div>
-      </a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier pulso y cadena" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (14)</span></div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div><div class="card__sz">Ahorras $101</div></a>
     </div>
   </section>
 
-  <section class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Explora</span>
-      <h2>Nuestras colecciones</h2>
-      <p>Lo más vendido de cada categoría.</p>
-    </div>
-    <div class="tabnav"><button data-tab="tb-cad" aria-pressed="true">Cadenas</button><button data-tab="tb-paq" aria-pressed="false">Paquetes</button><button data-tab="tb-pul" aria-pressed="false">Pulsos</button></div><div class="tabpane on" id="tb-cad"><div class="grid"><a class="card" href="#"><div class="card__media"><span class="card__badge">-13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Cartier</div><div class="card__price"><b>$699</b><s>$800</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(25)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Barbada</div><div class="card__price"><b>$599</b><s>$900</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(41)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=600" alt="Cadena Torzal Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Delgada</div><div class="card__price"><b>$599</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(33)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Tejido Bizantino</div><div class="card__price"><b>$899</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(18)</span></div></div></a></div></div><div class="tabpane" id="tb-paq"><div class="grid"><a class="card" href="#"><div class="card__media"><span class="card__badge">-10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=600" alt="Paquete Cartier Pulso y Cadena"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Cartier Pulso y Cadena</div><div class="card__price"><b>$899</b><s>$1,000</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(14)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-25%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_95jkl395jkl395jk.jpg?width=600" alt="Paquete Barbado Cadena y Pulso"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Barbado Cadena y Pulso</div><div class="card__price"><b>$899</b><s>$1,200</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(9)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-figaro-oro.jpg?width=600" alt="Paquete Figaro Premium"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Figaro Premium</div><div class="card__price"><b>$1,299</b><s>$1,500</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(7)</span></div></div></a><a class="card" href="#"><div class="card__media"><span class="card__badge">-10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-set-cadena-pulsera-cubana-oro.jpg?width=600" alt="Paquete Monaco Cubano"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Monaco Cubano</div><div class="card__price"><b>$1,799</b><s>$2,000</s></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(5)</span></div></div></a></div></div><div class="tabpane" id="tb-pul"><div class="grid"><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=600" alt="Pulso Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Cartier</div><div class="card__price"><b>$499</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(21)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=600" alt="Pulso Barbado"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Barbado</div><div class="card__price"><b>$499</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(17)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/2A60B915-85B0-41DC-9BA4-FA65CEDED2AF.jpg?width=600" alt="Pulso Torzal"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Torzal</div><div class="card__price"><b>$549</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(12)</span></div></div></a><a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/54E172A7-AA21-45D8-9740-12538D536493.jpg?width=600" alt="Pulso Cubano Premium"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Pulso Cubano Premium</div><div class="card__price"><b>$699</b></div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>(8)</span></div></div></a></div></div>
-  </section>
-
-  <section class="wrap" style="padding-top:0">
-    <div class="sec-head">
-      <span class="eyebrow">Por categoría</span>
-      <h2>Encuentra tu pieza</h2>
-    </div>
+  <section class="wrap rv" style="padding-top:0">
+    <div class="shead"><div><span class="eyebrow">Categorías</span><h2>Encuentra tu pieza</h2></div></div>
     <div class="cats">
-      <a class="cat" href="#">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/653F6B2A-4C09-4A19-8130-3BC27DD405F9.webp?width=700" alt="Cadenas">
-        <div class="cat__label"><span>30 piezas</span><h3>Cadenas</h3></div>
-      </a>
-      <a class="cat" href="#">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=700" alt="Pulsos">
-        <div class="cat__label"><span>32 piezas</span><h3>Pulsos</h3></div>
-      </a>
-      <a class="cat" href="#">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/AD998A0C-3B6D-4622-9F5C-CF610F804339.jpg?width=700" alt="Kits y paquetes">
-        <div class="cat__label"><span>10 paquetes</span><h3>Paquetes</h3></div>
-      </a>
+      <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/653F6B2A-4C09-4A19-8130-3BC27DD405F9.webp?width=800" alt="Cadenas" loading="lazy"><div class="cat__l"><h3>Cadenas</h3><span class="num">30 piezas · desde $599</span></div></a>
+      <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=800" alt="Pulsos" loading="lazy"><div class="cat__l"><h3>Pulsos</h3><span class="num">32 piezas · desde $499</span></div></a>
+      <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=800" alt="Dijes" loading="lazy"><div class="cat__l"><h3>Dijes</h3><span class="num">15 piezas · desde $699</span></div></a>
+      <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/AD998A0C-3B6D-4622-9F5C-CF610F804339.jpg?width=800" alt="Paquetes" loading="lazy"><div class="cat__l"><h3>Paquetes</h3><span class="num">10 sets · ahorra hasta 25%</span></div></a>
     </div>
   </section>
 
-  <section class="editorial">
-    <div class="editorial__img">
-      <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Professional_commercial_jewelry_product_photograph-1772212821976.png?width=900" alt="Detalle del baño de oro">
-    </div>
-    <div class="editorial__text">
-      <span class="eyebrow">Por qué nuestro oro</span>
-      <h2>No todo el oro laminado es igual</h2>
-      <p>La diferencia entre una pieza que dura años y una que se destiñe en semanas está en el grosor del baño y en el metal de base.</p>
-      <ul class="editorial__list">
-        <li><b>01</b><span>Baño de oro de 18 quilates, no de 14k ni "tono oro".</span></li>
-        <li><b>02</b><span>Base de acero inoxidable, no de cobre ni aleaciones que manchan la piel.</span></li>
-        <li><b>03</b><span>Broche de mosquetón reforzado, revisado pieza por pieza.</span></li>
-        <li><b>04</b><span>Hipoalergénico: no provoca comezón ni marca verde.</span></li>
-      </ul>
+  <section class="edi rv">
+    <div class="wrap edi__in">
+      <div class="edi__img"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Professional_commercial_jewelry_product_photograph-1772212821976.png?width=900" alt="Detalle del baño de oro 18k" loading="lazy"></div>
+      <div>
+        <span class="eyebrow">Por qué el nuestro dura</span>
+        <h2>No todo el oro laminado es igual</h2>
+        <p style="color:var(--ink-2)">La diferencia entre una pieza que dura años y una que se destiñe en semanas está en el grosor del baño y en el metal de base.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Baño de oro de 18 quilates</b> — no 10k ni "tono oro"</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Base de acero inoxidable</b> — no cobre ni aleaciones que manchan</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Hipoalergénico</b> — sin comezón ni marca verde</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Broche de mosquetón reforzado</b> — revisado pieza por pieza</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <section class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Así se ve puesto</span>
-      <h2>Nuestros clientes</h2>
-      <p>Videos reales de quienes ya traen su pieza. Sin retoques ni modelos de catálogo.</p>
+  <section class="wrap rv">
+    <div class="shead">
+      <div><span class="eyebrow">+10,000 clientes</span><h2>Lo que dicen</h2></div>
+      <a class="shead__link" href="#">Ver todas las reseñas →</a>
     </div>
-    <div class="ugc-strip">
-      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=400" alt="Cliente con cadena"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@carlos_mx</span></div>
-      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=400" alt="Cliente con pulso"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@luis.gdl</span></div>
-      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/2A60B915-85B0-41DC-9BA4-FA65CEDED2AF.jpg?width=400" alt="Cliente con kit"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@el_toro99</span></div>
-      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/54E172A7-AA21-45D8-9740-12538D536493.jpg?width=400" alt="Cliente con dije"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@memo_rdz</span></div>
-      <div class="ugc"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/6B2B69FE-BBD2-4E0F-B964-C7F70CD71CEB.jpg?width=400" alt="Cliente con cadena gruesa"><div class="ugc__play"><i>▶</i></div><span class="ugc__user">@jr_monterrey</span></div>
+    <div class="revs">
+      <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Ya llevo 8 meses usándola diario, me baño con ella y no se le ha caído el color. Vale cada peso.</p><div class="rev__a"><b>Carlos M.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
+      <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Llegó en 3 días y el estuche está bien padre para regalo. Se la di a mi hermano y quedó encantado.</p><div class="rev__a"><b>Luis G.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
+      <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Compré el paquete de cadena y pulso. Se ve igual que el oro de verdad y no me irrita la piel.</p><div class="rev__a"><b>Memo R.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
     </div>
   </section>
 </main>
 
-<!-- ════════════════════ PRODUCTO ════════════════════ -->
-<main class="page" id="p-prod">
+<!-- ═════════════ PRODUCTO ═════════════ -->
+<main class="page" id="prod">
   <div class="wrap pdp">
-    <div class="pdp__gallery">
-      <div class="pdp__thumbs">
-        <img class="on" src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=200" alt="Vista 1" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=900">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=200" alt="Vista 2" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=900">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=200" alt="Vista 3" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=900">
-        <img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=200" alt="Vista 4" data-full="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=900">
+    <div class="gal">
+      <div class="gal__t" id="thumbs">
+        <button class="on" data-f="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=1000"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=200" alt="Vista 1"></button>
+        <button data-f="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=1000"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/023512F9-B06F-4F79-AE9E-C3F5ABE1E782.jpg?width=200" alt="Vista 2"></button>
+        <button data-f="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=1000"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/0C90ABEB-BB23-4169-ABB2-0C0F66910E2D.jpg?width=200" alt="Vista 3"></button>
+        <button data-f="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=1000"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/A_realistic_male_model_wearing_the_existing_gold_C-1772147016700.png?width=200" alt="Puesta"></button>
       </div>
-      <div class="pdp__main">
-        <img id="pdpMain" src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=900" alt="Cadena Cartier oro laminado 18k">
-      </div>
+      <div class="gal__m"><img id="galmain" src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=1000" alt="Cadena Cartier oro laminado 18k"></div>
     </div>
 
-    <div class="pdp__info">
+    <div>
       <span class="eyebrow">Oro laminado · Baño 18k</span>
       <h1>Cadena Cartier</h1>
-      <div class="pdp__rating">★★★★★ <span>25 reseñas verificadas</span></div>
-      <div class="pdp__price"><b>$699</b><s>$800</s><em>Ahorras $101</em></div>
+      <div class="pdp__r"><i>★★★★★</i> <span class="num">4.9</span> · <a href="#">25 reseñas verificadas</a></div>
+      <div class="pdp__pr"><b class="num">$699</b><s class="num">$800</s><em>Ahorras $101</em></div>
+      <p class="pdp__tax">Precio en MXN, impuestos incluidos.</p>
 
-      <div class="opt-label">Tamaño</div>
-      <div class="opts">
+      <div class="olab"><span>Largo</span><span>Guía de tallas</span></div>
+      <div class="opts" id="sizes">
         <button class="opt" aria-pressed="true">50 cm</button>
         <button class="opt" aria-pressed="false">60 cm</button>
         <button class="opt" aria-pressed="false">70 cm</button>
       </div>
 
-      <div class="pdp__buy">
-        <button class="btn btn--full">Agregar a la bolsa · $699</button>
-        <button class="btn btn--ghost btn--full">Comprar ahora</button>
+      <div class="buy">
+        <button class="btn btn--w">Agregar a la bolsa · <span class="num">$699</span></button>
+        <button class="btn btn--out btn--w">Comprar ahora</button>
       </div>
 
-      <div class="msi">
-        <span style="font-size:1.4rem">💳</span>
-        <span>Hasta <b>12 meses sin intereses</b> con Mercado Pago.<br><span style="color:var(--ink-mute);font-size:.8rem">También sin tarjeta de crédito.</span></span>
+      <div class="msi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6"><path d="M4 7h16v11H4z"/><path d="M4 11h16"/></svg><span>Hasta <b>12 meses sin intereses</b> con Mercado Pago. También sin tarjeta de crédito.</span></div>
+
+      <div class="pdpt">
+        <div><svg viewBox="0 0 24 24"><path d="M3 8h13v9H3z"/><path d="M16 11h4l1 3v3h-5z"/></svg><div><b>Envío gratis</b>Entrega en 2–4 días</div></div>
+        <div><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6z"/></svg><div><b>30 días</b>Para devolver</div></div>
+        <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><b>Hipoalergénico</b>No mancha la piel</div></div>
+        <div><svg viewBox="0 0 24 24"><path d="M4 8h16v12H4z"/><path d="M9 8V5h6v3"/></svg><div><b>Estuche incluido</b>Listo para regalo</div></div>
       </div>
 
-      <div class="pdp__trust">
-        <div><b>Envío gratis</b>Entrega en 2–4 días</div>
-        <div><b>30 días</b>Devolución sin preguntas</div>
-        <div><b>Hipoalergénico</b>No mancha la piel</div>
-        <div><b>Estuche incluido</b>Listo para regalo</div>
-      </div>
-
-      <div style="margin-top:2.4rem">
-        <details class="acc" open><summary>Descripción</summary><p>Cadena tejido cartier con baño de oro de 18 quilates sobre base de acero inoxidable. Eslabones planos de 7 mm con broche de mosquetón reforzado. Conserva el brillo con el uso diario y no provoca reacciones en la piel.</p></details>
-        <details class="acc"><summary>Material y medidas</summary><p>Baño de oro 18k · Base de acero inoxidable · Ancho 7 mm · Largos disponibles: 50, 60 y 70 cm · Broche de mosquetón.</p></details>
-        <details class="acc"><summary>Cuidados</summary><p>Evita el contacto con perfumes, cloro y productos de limpieza. Retírala antes de bañarte o nadar. Limpia con un paño seco y suave. Guárdala en su estuche cuando no la uses.</p></details>
-        <details class="acc"><summary>Envíos y devoluciones</summary><p>Envío gratis en compras desde $600. Entrega de 2 a 4 días hábiles en todo México con número de rastreo. Devolución dentro de los 30 días posteriores a la entrega.</p></details>
+      <div style="margin-top:2.2rem">
+        <details class="ac" open><summary>Descripción</summary><p>Cadena tejido cartier con baño de oro de 18 quilates sobre base de acero inoxidable. Eslabones planos de 7 mm con broche de mosquetón reforzado. Conserva el brillo con el uso diario y no provoca reacciones en la piel.</p></details>
+        <details class="ac"><summary>Material y medidas</summary><p>Baño de oro 18k · Base de acero inoxidable · Ancho 7 mm · Largos: 50, 60 y 70 cm · Broche de mosquetón reforzado.</p></details>
+        <details class="ac"><summary>Cuidados</summary><p>Evita el contacto con perfumes, cloro y productos de limpieza. Retírala antes de nadar. Limpia con un paño seco y suave. Guárdala en su estuche cuando no la uses.</p></details>
+        <details class="ac"><summary>Envíos y devoluciones</summary><p>Envío gratis en compras desde $600. Entrega de 2 a 4 días hábiles en todo México con número de rastreo. Devolución dentro de los 30 días posteriores a la entrega.</p></details>
       </div>
     </div>
   </div>
 
-  <section class="wrap" style="padding-top:4rem">
-    <div class="sec-head">
-      <span class="eyebrow">Completa el look</span>
-      <h2>Va bien con</h2>
-    </div>
+  <section class="wrap rv">
+    <div class="shead"><div><span class="eyebrow">Compara</span><h2>Por qué el nuestro dura más</h2></div></div>
+    <div class="vs"><div class="vs__sc"><table>
+      <thead><tr><th>Característica</th><th>Rey Joyero</th><th>Bisutería común</th></tr></thead>
+      <tbody>
+        <tr><td>Baño de oro</td><td class="y">18 quilates</td><td class="n">10k o "tono oro"</td></tr>
+        <tr><td>Metal base</td><td class="y">Acero inoxidable</td><td class="n">Cobre o aleación</td></tr>
+        <tr><td>Mancha la piel</td><td class="y">No</td><td class="n">Sí, marca verde</td></tr>
+        <tr><td>Broche</td><td class="y">Mosquetón reforzado</td><td class="n">Broche simple</td></tr>
+        <tr><td>Garantía</td><td class="y">30 días</td><td class="n">Sin garantía</td></tr>
+        <tr><td>Estuche</td><td class="y">Incluido</td><td class="n">Bolsa de plástico</td></tr>
+      </tbody>
+    </table></div></div>
+  </section>
+
+  <section class="wrap rv" style="padding-top:0">
+    <div class="shead"><div><span class="eyebrow">Completa el look</span><h2>Va bien con</h2></div></div>
     <div class="grid">
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/49BC6636-08E6-4B47-B795-C9739FA7F875.jpg?width=600" alt="Dije Cruz Corona"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije Cruz Corona</div><div class="card__price"><b>$699</b></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=600" alt="Dije San Judas"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije San Judas Adiamantado</div><div class="card__price"><b>$699</b></div></div></a>
-      <a class="card" href="#"><div class="card__media"><span class="card__badge">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=600" alt="Paquete Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Paquete Cartier Pulso y Cadena</div><div class="card__price"><b>$899</b><s>$1,000</s></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=600" alt="Dije Baraja Rey"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Dije Baraja Rey</div><div class="card__price"><b>$799</b></div></div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/49BC6636-08E6-4B47-B795-C9739FA7F875.jpg?width=700" alt="Dije Cruz Corona" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije Cruz Corona</div><div class="card__p"><b class="num">$699</b></div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=700" alt="Dije San Judas" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije San Judas Adiamantado</div><div class="card__p"><b class="num">$699</b></div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div></a>
     </div>
   </section>
 </main>
 
-<!-- ════════════════════ COLECCIÓN ════════════════════ -->
-<main class="page" id="p-coll">
-  <div class="wrap coll-head">
-    <span class="eyebrow">30 piezas</span>
+<!-- ═════════════ COLECCIÓN ═════════════ -->
+<main class="page" id="coll">
+  <div class="wrap chead">
+    <span class="eyebrow">Oro laminado · Baño 18k</span>
     <h1>Cadenas</h1>
-    <p style="color:var(--ink-mute);max-width:56ch">Tejidos clásicos en baño de oro 18k sobre acero inoxidable. Todas nuestras cadenas incluyen estuche y garantía de 30 días.</p>
+    <p>Tejidos clásicos en baño de oro 18k sobre acero inoxidable. Todas incluyen estuche y 30 días de garantía.</p>
   </div>
-  <div class="wrap coll-bar">
+  <div class="wrap fbar">
     <div class="chips">
-      <button class="chip" aria-pressed="true">Todas</button>
+      <button class="chip" aria-pressed="true">Todas <span class="num">(30)</span></button>
       <button class="chip" aria-pressed="false">Delgadas</button>
       <button class="chip" aria-pressed="false">Gruesas</button>
-      <button class="chip" aria-pressed="false">Con dije</button>
       <button class="chip" aria-pressed="false">En oferta</button>
+      <button class="chip" aria-pressed="false">Menos de $800</button>
     </div>
-    <div class="chips"><button class="chip">Ordenar: Más vendidas ▾</button></div>
+    <div class="chips"><button class="chip">Más vendidas ▾</button></div>
   </div>
   <section class="wrap" style="padding-top:2rem">
     <div class="grid">
-      <a class="card" href="#"><div class="card__media"><span class="card__badge">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=600" alt="Cadena Cartier"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Cartier</div><div class="card__price"><b>$699</b><s>$800</s></div><div class="card__stars">★★★★★ <span>(25)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><span class="card__badge">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=600" alt="Cadena Barbada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Barbada</div><div class="card__price"><b>$599</b><s>$900</s></div><div class="card__stars">★★★★★ <span>(41)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=600" alt="Cadena Torzal Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Delgada</div><div class="card__price"><b>$599</b></div><div class="card__stars">★★★★★ <span>(33)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/45D11F02-8D16-40E0-BACA-D80A3013F527.jpg?width=600" alt="Cadena Torzal Gruesa"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Torzal Gruesa</div><div class="card__price"><b>$750</b></div><div class="card__stars">★★★★☆ <span>(15)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=600" alt="Cadena Tejido Bizantino"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Tejido Bizantino</div><div class="card__price"><b>$899</b></div><div class="card__stars">★★★★★ <span>(18)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/406321CD-4697-4E03-BD94-BE7C043B075C.jpg?width=600" alt="Cadena Mónaco Cubana"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Cubana</div><div class="card__price"><b>$1,200</b></div><div class="card__stars">★★★★★ <span>(9)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><span class="card__badge">−20%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/3F5D5C6D-4557-4766-8427-CFD34D2E7B36.jpg?width=600" alt="Cadena Mónaco Delgada"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Delgada</div><div class="card__price"><b>$799</b><s>$1,000</s></div><div class="card__stars">★★★★☆ <span>(11)</span></div></div></a>
-      <a class="card" href="#"><div class="card__media"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=600" alt="Cadena Mónaco Chain"><button class="card__add">Agregar</button></div><div class="card__body"><div class="card__name">Cadena Mónaco Chain</div><div class="card__price"><b>$1,800</b></div><div class="card__stars">★★★★★ <span>(12)</span></div></div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/45D11F02-8D16-40E0-BACA-D80A3013F527.jpg?width=700" alt="Cadena Torzal Gruesa" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Gruesa</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.7 (15)</span></div><div class="card__p"><b class="num">$750</b></div><div class="card__sz">60 · 80 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/406321CD-4697-4E03-BD94-BE7C043B075C.jpg?width=700" alt="Cadena Mónaco Cubana" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Cubana</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (9)</span></div><div class="card__p"><b class="num">$1,200</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−20%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/3F5D5C6D-4557-4766-8427-CFD34D2E7B36.jpg?width=700" alt="Cadena Mónaco Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Delgada</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (11)</span></div><div class="card__p"><b class="num">$799</b><s class="num">$1,000</s></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=700" alt="Dije Baraja Rey" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije Baraja Rey</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (7)</span></div><div class="card__p"><b class="num">$799</b></div><div class="card__sz">Talla única</div></a>
     </div>
   </section>
 </main>
 
-
-<!-- ══════════ NAVEGACIÓN MÓVIL ══════════ -->
-<div class="scrim" data-scrim hidden></div>
-
-<nav class="drawer" id="drawer" aria-label="Menú principal" aria-hidden="true">
-  <div class="drawer__top">
-    <div class="drawer__brand"><div class="brand" style="font-size:1.1rem">Rey <span>Joyero</span></div></div>
-    <button class="drawer__close" data-close aria-label="Cerrar menú">&times;</button>
+<!-- NAV MÓVIL -->
+<div class="scrim" id="scrim" hidden></div>
+<nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
+  <div class="drawer__h">
+    <span class="logo">Rey<em>Joyero</em></span>
+    <button class="icobtn" id="dclose" aria-label="Cerrar menú"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
-  <div class="drawer__body">
-    <div class="drawer__head">Oro laminado y baño 18k</div>
-    <div class="drawer__sub">
-      <a href="#">Cadenas <span>30</span></a>
-      <a href="#">Pulsos <span>32</span></a>
-      <a href="#">Dijes <span>15</span></a>
-      <a href="#">Cadenas gruesas <span>5</span></a>
-      <a href="#">Van Cleef <span>14</span></a>
-      <a href="#">Paquetes pulso y cadena <span>10</span></a>
+  <div class="drawer__b">
+    <div class="drawer__g">Oro laminado y baño 18k</div>
+    <div class="drawer__s">
+      <a href="#">Cadenas <span class="num">30</span></a>
+      <a href="#">Pulsos <span class="num">32</span></a>
+      <a href="#">Dijes <span class="num">15</span></a>
+      <a href="#">Cadenas gruesas <span class="num">5</span></a>
+      <a href="#">Van Cleef <span class="num">14</span></a>
+      <a href="#">Paquetes pulso y cadena <span class="num">10</span></a>
     </div>
-
-    <div class="drawer__head">Plata</div>
-    <div class="drawer__sub">
-      <a href="#">Cadenas de plata <span>7</span></a>
-      <a href="#">Pulsos de plata <span>6</span></a>
+    <div class="drawer__g">Plata</div>
+    <div class="drawer__s">
+      <a href="#">Cadenas de plata <span class="num">7</span></a>
+      <a href="#">Pulsos de plata <span class="num">6</span></a>
     </div>
-
-    <div class="drawer__head">Paquetes</div>
-    <div class="drawer__sub">
-      <a href="#">Paquetes cadena y dije <span>17</span></a>
-      <a href="#">Kit 3 en 1 <span>7</span></a>
+    <div class="drawer__g">Paquetes</div>
+    <div class="drawer__s">
+      <a href="#">Paquetes cadena y dije <span class="num">17</span></a>
+      <a href="#">Kit 3 en 1 <span class="num">7</span></a>
     </div>
-
-    <a class="drawer__link" href="#">Personalizados</a>
-    <a class="drawer__link" href="#">Relojes</a>
-    <a class="drawer__link" href="#">Más vendidos</a>
-    <a class="drawer__link" href="#">Nosotros</a>
-    <a class="drawer__link" href="#">Contáctanos</a>
+    <a class="drawer__l" href="#">Personalizados</a>
+    <a class="drawer__l" href="#">Relojes</a>
+    <a class="drawer__l" href="#">Más vendidos</a>
+    <a class="drawer__l" href="#">Nosotros</a>
+    <a class="drawer__l" href="#">Contáctanos</a>
   </div>
-  <div class="drawer__foot">
-    <a class="drawer__wa" href="#">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.6 14.2c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.2-.8-2.7-1.1-4.4-3.9-4.5-4-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.5-.3.3c-.1.1-.2.3 0 .5l.9 1.4c.6.7 1.1 1 1.4 1.1.2.1.4.1.5 0l.7-.8c.2-.2.3-.2.5-.1l2 .9c.2.1.4.2.4.3.1.2.1.6 0 1Z"/></svg>
-      WhatsApp 33 1151 2137
-    </a>
-    <div style="display:flex;gap:1.2rem">
-      <a href="#" style="color:var(--ink-mute);text-decoration:none;font-size:.92rem;min-height:44px;display:flex;align-items:center">Instagram</a>
-      <a href="#" style="color:var(--ink-mute);text-decoration:none;font-size:.92rem;min-height:44px;display:flex;align-items:center">TikTok</a>
-      <a href="#" style="color:var(--ink-mute);text-decoration:none;font-size:.92rem;min-height:44px;display:flex;align-items:center">Facebook</a>
-    </div>
-  </div>
-</nav>
-
-<nav class="tabbar" aria-label="Accesos rápidos">
-  <div class="tabbar__in">
-    <a href="#" aria-current="page">
-      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>
-      Inicio
-    </a>
-    <a href="#">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      Buscar
-    </a>
-    <a href="#">
-      <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
-      Bolsa
-    </a>
-    <a href="#">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>
-      Cuenta
-    </a>
+  <div class="drawer__f">
+    <a href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/></svg> WhatsApp 33 1151 2137</a>
   </div>
 </nav>
 
 <footer>
-  <div class="wrap foot-grid">
+  <div class="wrap fg">
     <div>
-      <div class="foot-brand">Rey <span>Joyero</span></div>
-      <p style="color:var(--ink-mute);font-size:.88rem;max-width:34ch">Joyería en oro laminado 18k para hombre. Enviamos a todo México.</p>
+      <div class="logo" style="margin-bottom:.8rem">Rey<em>Joyero</em></div>
+      <p style="color:var(--ink-2);font-size:.93rem;max-width:34ch">Joyería en oro laminado 18k para hombre. Enviamos a todo México.</p>
     </div>
-    <div><h4>Tienda</h4><ul>
-      <li><a href="#">Cadenas</a></li><li><a href="#">Pulsos</a></li><li><a href="#">Dijes</a></li>
-      <li><a href="#">Cadenas Gruesas</a></li><li><a href="#">Van Cleef</a></li><li><a href="#">Paquetes</a></li>
-      <li><a href="#">Plata</a></li><li><a href="#">Personalizados</a></li><li><a href="#">Relojes</a></li><li><a href="#">Más vendidos</a></li>
-    </ul></div>
-    <div><h4>Información</h4><ul>
-      <li><a href="#">Nosotros</a></li>
-      <li><a href="#">Contáctanos</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#">Politicas de envio</a></li>
-      <li><a href="#">Politicas de reembolso</a></li>
-      <li><a href="#">Politicas de privacidad</a></li>
-      <li><a href="#">Términos de servicio</a></li>
-    </ul></div>
-    <div>
-      <h4>Contacto</h4>
-      <ul>
-        <li><a class="wa" href="#">WhatsApp 33 1151 2137</a></li>
-        <li><a href="#">Instagram @elreyjoyero</a></li>
-        <li><a href="#">TikTok @elreyjoyero</a></li>
-        <li><a href="#">Facebook @elreyjoyero</a></li>
-      </ul>
-    </div>
+    <div><h4>Tienda</h4><ul><li><a href="#">Cadenas</a></li><li><a href="#">Pulsos</a></li><li><a href="#">Dijes</a></li><li><a href="#">Cadenas gruesas</a></li><li><a href="#">Van Cleef</a></li><li><a href="#">Paquetes</a></li><li><a href="#">Plata</a></li><li><a href="#">Personalizados</a></li><li><a href="#">Relojes</a></li><li><a href="#">Más vendidos</a></li></ul></div>
+    <div><h4>Información</h4><ul><li><a href="#">Nosotros</a></li><li><a href="#">Contáctanos</a></li><li><a href="#">Blog</a></li><li><a href="#">Politicas de envio</a></li><li><a href="#">Politicas de reembolso</a></li><li><a href="#">Politicas de privacidad</a></li><li><a href="#">Términos de servicio</a></li></ul></div>
+    <div><h4>Contacto</h4><ul><li><a class="fwa" href="#">WhatsApp 33 1151 2137</a></li><li><a href="#">Instagram @elreyjoyero</a></li><li><a href="#">TikTok @elreyjoyero</a></li><li><a href="#">Facebook @elreyjoyero</a></li></ul></div>
   </div>
-  <div class="wrap foot-bottom">
+  <div class="wrap fbot">
     <span>© 2026 El Rey Joyero</span>
-    <span>Politicas de privacidad · Términos de servicio · Politicas de envio · Politicas de reembolso</span>
+    <span>Politicas de privacidad · Términos de servicio · Politicas de envio</span>
   </div>
 </footer>
 
-
 <script>
-
-// ── Altura real de la barra de control ───────────────
-// La barra envuelve en pantallas chicas y cambia de alto; medimos en vivo
-// para que nunca tape el header ni la hamburguesa.
-(function() {
-  const ctl = document.querySelector('.ctl');
-  if (!ctl) return;
-  const medir = () => {
-    document.documentElement.style.setProperty('--ctl-h', ctl.offsetHeight + 'px');
-  };
-  medir();
-  if (window.ResizeObserver) new ResizeObserver(medir).observe(ctl);
-  window.addEventListener('resize', medir, { passive: true });
-  window.addEventListener('orientationchange', medir);
+// ── Altura real de la barra de preview ──
+(function(){
+  const c = document.querySelector('.ctl');
+  const m = () => document.documentElement.style.setProperty('--ctl-h', c.offsetHeight + 'px');
+  m(); if (window.ResizeObserver) new ResizeObserver(m).observe(c);
+  addEventListener('resize', m, {passive:true});
 })();
 
-
-// ── Navegación móvil ─────────────────────────────────
-(function() {
-  const burger = document.querySelector('.burger');
-  const drawer = document.getElementById('drawer');
-  const scrim  = document.querySelector('[data-scrim]');
-  const cerrar = document.querySelector('[data-close]');
-  if (!burger || !drawer || !scrim) return;
-
-  let ultimoFoco = null;
-
-  function abrir() {
-    ultimoFoco = document.activeElement;
-    drawer.classList.add('open');
-    scrim.classList.add('open');
-    scrim.hidden = false;
-    burger.setAttribute('aria-expanded', 'true');
-    drawer.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('nav-open');
-    const primero = drawer.querySelector('a, button');
-    if (primero) primero.focus();
-  }
-
-  function cerrarNav() {
-    drawer.classList.remove('open');
-    scrim.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-    drawer.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('nav-open');
-    setTimeout(() => { scrim.hidden = true; }, 300);
-    if (ultimoFoco) ultimoFoco.focus();
-  }
-
-  burger.addEventListener('click', () => {
-    drawer.classList.contains('open') ? cerrarNav() : abrir();
-  });
-  scrim.addEventListener('click', cerrarNav);
-  if (cerrar) cerrar.addEventListener('click', cerrarNav);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('open')) cerrarNav();
-  });
-
-  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', cerrarNav));
-
-  // cierra al pasar a escritorio
-  window.matchMedia('(min-width: 1001px)').addEventListener('change', (e) => {
-    if (e.matches && drawer.classList.contains('open')) cerrarNav();
-  });
-})();
-
-// ── Selector de paletas ──────────────────────────────
-document.querySelectorAll('.ctl__sw button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.ctl__sw button').forEach(x => x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    document.documentElement.setAttribute('data-palette', b.dataset.p);
-  });
-});
-
-// ── Selector de tipografías ──────────────────────────
+// ── Tipografías: 3 estructuras distintas, ninguna cursiva ──
 const FUENTES = {
-  slab:   { d: "'Bitter','Zilla Slab','Rockwell','Palatino Linotype','Book Antiqua',Palatino,serif",
-            b: "'Barlow','Roboto Condensed','Segoe UI',system-ui,-apple-system,sans-serif" },
-  didone: { d: "'Playfair Display','Didot','Bodoni MT','Times New Roman',Georgia,serif",
-            b: "'Jost','Futura','Century Gothic','Segoe UI',system-ui,sans-serif" },
-  geom:   { d: "'Poppins','Futura','Century Gothic','Trebuchet MS',system-ui,sans-serif",
-            b: "'Inter','Segoe UI',system-ui,-apple-system,sans-serif" }
+  // CLARA: formas abiertas, baja carga cognitiva → confianza
+  clara:   { d:"'Inter',-apple-system,'Segoe UI',system-ui,sans-serif",
+             b:"'Inter',-apple-system,'Segoe UI',system-ui,sans-serif",
+             n:"'Inter',-apple-system,'Segoe UI',system-ui,sans-serif", t:"-.03em", w:"700" },
+  // SÓLIDA: trazo denso y ancho → autoridad, justifica precio
+  solida:  { d:"'Archivo','Arial Black','Helvetica Neue',Impact,sans-serif",
+             b:"'Roboto Condensed','Arial Narrow','Segoe UI',sans-serif",
+             n:"'Archivo','Arial Black',sans-serif", t:"-.04em", w:"800" },
+  // TÉCNICA: grotesca + cifras monoespaciadas → precisión, se ve diseñado
+  tecnica: { d:"'Space Grotesk','Trebuchet MS','Segoe UI',sans-serif",
+             b:"'IBM Plex Sans','Segoe UI',system-ui,sans-serif",
+             n:"'Space Mono','Courier New',ui-monospace,monospace", t:"-.02em", w:"600" }
 };
-document.querySelectorAll('.ctl__fonts button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.ctl__fonts button').forEach(x => x.setAttribute('aria-pressed','false'));
+document.querySelectorAll('#fonts button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#fonts button').forEach(x => x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');
+  const f = FUENTES[b.dataset.f], r = document.documentElement.style;
+  r.setProperty('--f-display', f.d); r.setProperty('--f-body', f.b); r.setProperty('--f-num', f.n);
+  r.setProperty('--tracking-display', f.t); r.setProperty('--weight-display', f.w);
+}));
+
+// ── Acentos ──
+document.querySelectorAll('#tones button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#tones button').forEach(x => x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');
+  document.documentElement.setAttribute('data-tone', b.dataset.t);
+}));
+
+// ── Páginas ──
+document.querySelectorAll('#pages button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#pages button').forEach(x => x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById(b.dataset.p).classList.add('on');
+  scrollTo({top:0, behavior:'smooth'});
+  requestAnimationFrame(revelar);
+}));
+
+// ── Grupos de botones ──
+['#sizes .opt', '.chip'].forEach(sel => {
+  document.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => {
+    b.parentElement.querySelectorAll(sel.includes('opt') ? '.opt' : '.chip')
+      .forEach(x => x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
-    const f = FUENTES[b.dataset.f];
-    document.documentElement.style.setProperty('--font-display', f.d);
-    document.documentElement.style.setProperty('--font-body', f.b);
-  });
+  }));
 });
 
-// ── Cambio de página ─────────────────────────────────
-document.querySelectorAll('.ctl__pages button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.ctl__pages button').forEach(x => x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-    document.getElementById(b.dataset.page).classList.add('on');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
+// ── Galería ──
+document.querySelectorAll('#thumbs button').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('#thumbs button').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  document.getElementById('galmain').src = t.dataset.f;
+}));
 
-// ── Opciones de variante y filtros ───────────────────
-function grupo(sel) {
-  document.querySelectorAll(sel).forEach(b => {
-    b.addEventListener('click', () => {
-      b.parentElement.querySelectorAll(sel).forEach(x => x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-    });
-  });
+// ── Menú móvil ──
+(function(){
+  const b = document.getElementById('burger'), d = document.getElementById('drawer'),
+        s = document.getElementById('scrim'), c = document.getElementById('dclose');
+  let prev = null;
+  const abrir = () => { prev = document.activeElement; d.classList.add('open'); s.hidden = false;
+    requestAnimationFrame(()=>s.classList.add('open'));
+    b.setAttribute('aria-expanded','true'); d.setAttribute('aria-hidden','false');
+    document.body.classList.add('locked'); (d.querySelector('a,button')||d).focus(); };
+  const cerrar = () => { d.classList.remove('open'); s.classList.remove('open');
+    b.setAttribute('aria-expanded','false'); d.setAttribute('aria-hidden','true');
+    document.body.classList.remove('locked'); setTimeout(()=>s.hidden=true, 300); if (prev) prev.focus(); };
+  b.addEventListener('click', () => d.classList.contains('open') ? cerrar() : abrir());
+  s.addEventListener('click', cerrar); c.addEventListener('click', cerrar);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && d.classList.contains('open')) cerrar(); });
+  d.querySelectorAll('a').forEach(a => a.addEventListener('click', cerrar));
+})();
+
+// ── Revelado al hacer scroll ──
+function revelar() {
+  const els = document.querySelectorAll('.page.on .rv:not(.in)');
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+  els.forEach(e => io.observe(e));
 }
-grupo('.opt'); grupo('.chip');
+revelar();
 
-document.querySelectorAll('.tabnav button').forEach(function(b) {
-  b.addEventListener('click', function() {
-    b.parentElement.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
-    b.setAttribute('aria-pressed','true');
-    document.querySelectorAll('.tabpane').forEach(function(p){ p.classList.remove('on'); });
-    document.getElementById(b.dataset.tab).classList.add('on');
-  });
-});
-
-
-// ── Galería de producto ──────────────────────────────
-document.querySelectorAll('.pdp__thumbs img').forEach(t => {
-  t.addEventListener('click', () => {
-    document.querySelectorAll('.pdp__thumbs img').forEach(x => x.classList.remove('on'));
-    t.classList.add('on');
-    document.getElementById('pdpMain').src = t.dataset.full;
-  });
-});
-
-// ── Evitar navegación de los enlaces demo ────────────
 document.querySelectorAll('a[href="#"]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
-document.querySelectorAll('.card__add').forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); }));
+document.querySelectorAll('.qa').forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); }));
 </script>
