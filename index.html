@@ -652,6 +652,112 @@ body.locked { overflow: hidden; }
 .drawer__img small { color: var(--ink-3); font-size: .8rem; }
 .drawer__img svg { width: 17px; height: 17px; flex-shrink: 0; stroke: var(--ink-3); fill: none; stroke-width: 1.8; }
 
+
+/* ═══════════════════════════════════════════════════════════
+   DRAWER ANIMADO
+   GSAP anima la entrada y escalona los elementos.
+   El CSS de abajo es el respaldo si GSAP no carga.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Curva más natural para la entrada por CSS (respaldo) */
+.drawer { transition: transform .42s cubic-bezier(.16,1,.3,1); }
+.scrim  { transition: opacity .42s ease, visibility .42s ease; }
+
+/* Estado inicial de los elementos SOLO cuando GSAP va a animarlos.
+   Sin esta clase todo se ve normal, así que si GSAP falla no se rompe nada. */
+.drawer.gsap-ready .drawer__img,
+.drawer.gsap-ready .drawer__l,
+.drawer.gsap-ready .drawer__f,
+.drawer.gsap-ready .drawer__h { will-change: transform, opacity; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .scrim { transition: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMACIONES EN PUNTOS CLAVE
+   Criterio: solo donde dirige la atención a una decisión de compra.
+   Todo CSS nativo — 0KB de JS extra.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 1. HERO: entrada al cargar (primera impresión, 90s decisivos) ── */
+@keyframes heroUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes heroImg {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: none; }
+}
+.hero__l > *, .hero__text > *, .hero__in > div:first-child > * { animation: heroUp .7s cubic-bezier(.16,1,.3,1) backwards; }
+.hero__l > *:nth-child(1), .hero__text > *:nth-child(1), .hero__in > div:first-child > *:nth-child(1) { animation-delay: .05s; }
+.hero__l > *:nth-child(2), .hero__text > *:nth-child(2), .hero__in > div:first-child > *:nth-child(2) { animation-delay: .13s; }
+.hero__l > *:nth-child(3), .hero__text > *:nth-child(3), .hero__in > div:first-child > *:nth-child(3) { animation-delay: .21s; }
+.hero__l > *:nth-child(4), .hero__text > *:nth-child(4), .hero__in > div:first-child > *:nth-child(4) { animation-delay: .29s; }
+.hero__l > *:nth-child(5), .hero__text > *:nth-child(5), .hero__in > div:first-child > *:nth-child(5) { animation-delay: .37s; }
+.hero__img img, .hero__r img { animation: heroImg .9s cubic-bezier(.16,1,.3,1) backwards; animation-delay: .1s; }
+
+/* ── 2. PRECIO: destello al cambiar de variante (confirma la acción) ── */
+@keyframes priceFlash {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+.pdp__pr b.flash, .ppr b.flash { animation: priceFlash .42s cubic-bezier(.3,1.4,.5,1); }
+
+/* ── 3. BOTÓN DE COMPRA: latido sutil al entrar en pantalla ── */
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(138,106,30,0); }
+  50%      { box-shadow: 0 0 0 7px rgba(138,106,30,.13); }
+}
+.buy .btn:first-child.seen { animation: ctaPulse 2s ease-out 2; }
+
+/* ── 4. IMAGEN DE PRODUCTO: zoom suave al cambiar en la galería ── */
+@keyframes galSwap {
+  from { opacity: .35; transform: scale(1.025); }
+  to   { opacity: 1; transform: none; }
+}
+.gal__m img.swap { animation: galSwap .45s cubic-bezier(.16,1,.3,1); }
+
+/* ── 5. TARJETA DE PRODUCTO: elevación al pasar el cursor ── */
+.card {
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease;
+}
+@media (hover: hover) {
+  .card:hover { transform: translateY(-3px); }
+}
+
+/* ── 6. AÑADIDO AL CARRITO: confirmación visible ── */
+@keyframes okPop {
+  0%   { transform: scale(.85); opacity: 0; }
+  55%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.qmodal__f .btn.ok {
+  background: var(--ok) !important; border-color: var(--ok) !important;
+  animation: okPop .4s cubic-bezier(.3,1.4,.5,1);
+}
+
+/* ── 7. CHIPS: realimentación al seleccionar filtro ── */
+.chip { transition: background .22s, border-color .22s, color .22s, transform .16s; }
+.chip:active { transform: scale(.96); }
+
+/* ── 8. BADGE DE OFERTA: entrada al aparecer la tarjeta ── */
+@keyframes tagIn {
+  from { opacity: 0; transform: translateY(-5px) scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+.rv-s.in .tag { animation: tagIn .45s cubic-bezier(.3,1.3,.5,1) backwards; animation-delay: .25s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__l > *, .hero__text > *, .hero__in > div:first-child > *, .hero__img img, .hero__r img,
+  .rv-s.in .tag { animation: none !important; }
+  .pdp__pr b.flash, .ppr b.flash, .gal__m img.swap,
+  .buy .btn:first-child.seen, .qmodal__f .btn.ok { animation: none !important; }
+  .card:hover { transform: none; }
+}
+
 </style>
 
 <div class="ctl">
@@ -1053,7 +1159,8 @@ document.querySelectorAll('#thumbs button').forEach(t => t.addEventListener('cli
   const abrir = () => { prev = document.activeElement; d.classList.add('open'); s.hidden = false;
     requestAnimationFrame(()=>s.classList.add('open'));
     b.setAttribute('aria-expanded','true'); d.setAttribute('aria-hidden','false');
-    document.body.classList.add('locked'); (d.querySelector('a,button')||d).focus(); };
+    document.body.classList.add('locked'); (d.querySelector('a,button')||d).focus();
+    if (window.animarDrawerEntrada) window.animarDrawerEntrada(); };
   const cerrar = () => { d.classList.remove('open'); s.classList.remove('open');
     b.setAttribute('aria-expanded','false'); d.setAttribute('aria-hidden','true');
     document.body.classList.remove('locked'); setTimeout(()=>s.hidden=true, 300); if (prev) prev.focus(); };
@@ -1205,6 +1312,114 @@ document.querySelectorAll('.qa').forEach(b => b.addEventListener('click', e => {
       });
     });
   });
+})();
+
+
+// ═══ Drawer animado con GSAP (carga bajo demanda) ═══
+// GSAP pesa ~71KB: se descarga solo al primer toque de la hamburguesa,
+// así la carga inicial de la página no lo paga. Si falla, el CSS abre igual.
+(function() {
+  const drawer = document.getElementById('drawer');
+  if (!drawer) return;
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let gsapListo = false, cargando = null;
+
+  function cargarGSAP() {
+    if (gsapListo) return Promise.resolve(true);
+    if (cargando) return cargando;
+    cargando = new Promise((resolve) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js';
+      s.async = true;
+      s.onload = () => { gsapListo = true; drawer.classList.add('gsap-ready'); resolve(true); };
+      s.onerror = () => resolve(false);   // sin GSAP seguimos con CSS
+      document.head.appendChild(s);
+    });
+    return cargando;
+  }
+
+  // Precarga en cuanto el usuario roza la hamburguesa: para cuando toque, ya está.
+  const burger = document.getElementById('burger');
+  if (burger && !reduce) {
+    ['pointerenter', 'touchstart'].forEach(ev =>
+      burger.addEventListener(ev, cargarGSAP, { once: true, passive: true }));
+  }
+
+  function elementos() {
+    return drawer.querySelectorAll('.drawer__img, .drawer__l, .drawer__f > *');
+  }
+
+  window.animarDrawerEntrada = function() {
+    if (reduce || !gsapListo || !window.gsap) return;   // el CSS ya lo abrió
+    const els = elementos();
+    gsap.killTweensOf(els);
+    gsap.fromTo(els,
+      { x: -22, opacity: 0 },
+      { x: 0, opacity: 1, duration: .5, stagger: 0.035,
+        ease: 'power3.out', delay: .12, clearProps: 'transform' });
+  };
+
+  window.animarDrawerSalida = function() {
+    if (reduce || !gsapListo || !window.gsap) return;
+    gsap.killTweensOf(elementos());
+    gsap.set(elementos(), { clearProps: 'all' });
+  };
+
+  // Si GSAP entra tarde, lo cargamos igualmente al primer clic
+  if (burger) burger.addEventListener('click', () => { cargarGSAP().then(() => {}); }, { passive: true });
+})();
+
+
+// ═══ Disparadores de las animaciones clave ═══
+(function() {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+
+  // 2. Destello del precio al cambiar de talla
+  const precio = document.querySelector('.pdp__pr b, .ppr b');
+  document.querySelectorAll('#sizes .opt').forEach(b => {
+    b.addEventListener('click', () => {
+      if (!precio) return;
+      precio.classList.remove('flash');
+      void precio.offsetWidth;          // reinicia la animación
+      precio.classList.add('flash');
+    });
+  });
+
+  // 3. Latido del botón de compra al entrar en pantalla
+  const cta = document.querySelector('.buy .btn');
+  if (cta && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } });
+    }, { threshold: .9 });
+    io.observe(cta);
+  }
+
+  // 4. Transición al cambiar la imagen de la galería
+  const main = document.getElementById('galmain');
+  document.querySelectorAll('#thumbs button').forEach(t => {
+    t.addEventListener('click', () => {
+      if (!main) return;
+      main.classList.remove('swap');
+      void main.offsetWidth;
+      main.classList.add('swap');
+    });
+  });
+
+  // 6. Confirmación al agregar al carrito
+  const btnAdd = document.querySelector('.qmodal__f .btn');
+  if (btnAdd) {
+    const original = btnAdd.textContent;
+    btnAdd.addEventListener('click', () => {
+      btnAdd.classList.add('ok');
+      btnAdd.textContent = '✓ Agregado al carrito';
+      setTimeout(() => {
+        btnAdd.classList.remove('ok');
+        btnAdd.textContent = original;
+      }, 1600);
+    });
+  }
 })();
 
 </script>
