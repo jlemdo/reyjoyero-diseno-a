@@ -434,6 +434,224 @@ body.locked { overflow: hidden; }
   .ctl__lab { font-size: .7rem; }
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   NEUROMARKETING + MICROINTERACCIONES
+   Animación con propósito: solo donde ayuda a decidir o comprar.
+   Sin librerías externas — CSS + IntersectionObserver (~1KB).
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Prueba social específica (hasta +34% vs. genérica) ── */
+.proof {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .85rem; color: var(--ink-2);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  padding: .45rem .8rem; border-radius: 100px; margin-bottom: 1rem;
+}
+.proof__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  position: relative; flex-shrink: 0;
+}
+.proof__dot::after {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  border: 1.5px solid var(--ok); opacity: .45;
+  animation: pulseDot 2.4s ease-out infinite;
+}
+@keyframes pulseDot {
+  0%   { transform: scale(.7); opacity: .55; }
+  70%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+.proof b { color: var(--ink); font-weight: 700; }
+
+/* ── Escasez honesta (solo con inventario real) ── */
+.stock { display: flex; align-items: center; gap: .6rem; margin: 1.1rem 0; font-size: .88rem; }
+.stock__bar { flex: 1; height: 5px; background: var(--hair, #e8e5df); border-radius: 3px; overflow: hidden; max-width: 150px; }
+.stock__fill { height: 100%; background: var(--sale); border-radius: 3px; width: 0; transition: width 1.1s cubic-bezier(.2,.7,.3,1); }
+.stock.in .stock__fill { width: var(--stock-pct, 25%); }
+.stock b { color: var(--sale); font-weight: 700; }
+
+/* ── Anclaje de precio: ahorro visible en paquetes ── */
+.anchor {
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+  padding: .8rem 1rem; margin: 1rem 0;
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--r) var(--r) 0; font-size: .9rem;
+}
+.anchor b { font-size: 1.15rem; font-weight: 800; color: var(--accent); }
+.anchor s { color: var(--ink-3); }
+
+/* ── Barra de progreso a envío gratis ── */
+.ship {
+  border: 1px solid var(--accent-line); background: var(--accent-soft);
+  border-radius: var(--r); padding: .85rem 1rem; margin-top: 1.1rem; font-size: .88rem;
+}
+.ship__t { display: flex; justify-content: space-between; margin-bottom: .5rem; }
+.ship__t b { color: var(--accent); font-weight: 700; }
+.ship__bar { height: 6px; background: rgba(0,0,0,.08); border-radius: 3px; overflow: hidden; }
+.ship__fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0; transition: width 1.2s cubic-bezier(.2,.7,.3,1); }
+.ship.in .ship__fill { width: var(--ship-pct, 70%); }
+
+/* ── Contador animado (prueba social numérica) ── */
+.cnum { font-variant-numeric: tabular-nums; }
+
+/* ── Microinteracción: botón de compra ── */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.28), transparent 55%);
+  opacity: 0; transition: opacity .35s;
+}
+.btn:hover::after { opacity: 1; }
+
+/* ── Revelado escalonado (stagger) ── */
+.rv-s > * { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1); }
+.rv-s.in > * { opacity: 1; transform: none; }
+.rv-s.in > *:nth-child(1) { transition-delay: 0ms; }
+.rv-s.in > *:nth-child(2) { transition-delay: 60ms; }
+.rv-s.in > *:nth-child(3) { transition-delay: 120ms; }
+.rv-s.in > *:nth-child(4) { transition-delay: 180ms; }
+.rv-s.in > *:nth-child(5) { transition-delay: 240ms; }
+.rv-s.in > *:nth-child(6) { transition-delay: 300ms; }
+
+/* ── Un solo CTA dominante por pantalla (reduce carga de decisión) ── */
+.btn--ghost {
+  background: transparent; color: var(--ink-2); border-color: transparent;
+  text-decoration: underline; text-underline-offset: 3px; font-weight: 600;
+}
+.btn--ghost:hover { background: transparent; color: var(--ink); border-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .proof__dot::after { animation: none; }
+  .rv-s > * { opacity: 1; transform: none; transition: none; }
+  .stock__fill, .ship__fill { transition: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PETICIONES DEL EQUIPO
+   Banderín infinito · chips de categorías · quick add · menú con imágenes
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Banderín infinito (izquierda → derecha) ── */
+.ticker {
+  background: var(--ink); color: #fff; overflow: hidden;
+  padding: .55rem 0; position: relative;
+}
+.ticker__track { display: flex; width: max-content; animation: tickerRun 38s linear infinite; }
+.ticker__track > span {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .8rem; font-weight: 600; letter-spacing: .02em;
+  padding: 0 1.6rem; white-space: nowrap;
+}
+.ticker__track > span::after { content: '◆'; color: var(--accent); font-size: .5rem; margin-left: 1.6rem; }
+.ticker b { color: var(--accent); font-weight: 800; }
+.ticker .stars { color: var(--accent); letter-spacing: -.08em; }
+@keyframes tickerRun { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.ticker:hover .ticker__track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }
+
+/* ── Chips de categorías deslizables ── */
+.catbar { border-bottom: 1px solid var(--hair, #e8e5df); background: var(--bg); }
+.catbar__sc {
+  display: flex; gap: .5rem; overflow-x: auto; padding: .7rem 0;
+  scrollbar-width: none; -ms-overflow-style: none;
+  scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+}
+.catbar__sc::-webkit-scrollbar { display: none; }
+.catbar__sc a {
+  flex: 0 0 auto; scroll-snap-align: start;
+  display: inline-flex; align-items: center; min-height: 40px;
+  padding: .5rem 1.05rem; border-radius: 100px;
+  font-size: .86rem; font-weight: 600; text-decoration: none;
+  color: var(--ink-2); background: var(--paper, #f8f6f1);
+  border: 1px solid transparent; white-space: nowrap; transition: .2s;
+}
+.catbar__sc a:hover { border-color: var(--accent-line); color: var(--ink); }
+.catbar__sc a[aria-current="page"] { background: var(--accent); color: #fff; }
+
+/* ── Quick add: botón con texto (no icono) ── */
+.qadd {
+  position: absolute; left: .6rem; right: .6rem; bottom: .6rem; z-index: 3;
+  background: #fff; color: var(--ink); border: 1px solid var(--hair, #e8e5df);
+  font-family: inherit; font-size: .84rem; font-weight: 700;
+  padding: .7rem; border-radius: var(--r); cursor: pointer; min-height: 44px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .25s, transform .25s, background .2s, color .2s;
+}
+.qadd:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.card:hover .qadd, .card:focus-within .qadd { opacity: 1; transform: translateY(0); }
+@media (hover: none) { .qadd { opacity: 1; transform: none; } }
+
+/* ── Panel flotante de quick add ── */
+.qmodal {
+  position: fixed; inset: 0; z-index: 1300;
+  display: grid; place-items: center; padding: 1.2rem;
+  background: rgba(17,16,16,.55);
+  opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s;
+}
+.qmodal.open { opacity: 1; visibility: visible; }
+.qmodal__c {
+  background: #fff; border-radius: 10px; width: min(430px, 100%);
+  max-height: 88svh; overflow-y: auto; overscroll-behavior: contain;
+  transform: translateY(14px) scale(.98); transition: transform .28s cubic-bezier(.2,.7,.3,1);
+  box-shadow: 0 24px 60px rgba(0,0,0,.28);
+}
+.qmodal.open .qmodal__c { transform: none; }
+.qmodal__h {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+  padding: 1.3rem 1.4rem .9rem;
+}
+.qmodal__h h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: 0; line-height: 1.35; text-transform: none; }
+.qmodal__x {
+  width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center;
+  background: none; border: 0; cursor: pointer; color: var(--ink-3); font-size: 1.5rem; line-height: 1;
+}
+.qmodal__x:hover { color: var(--ink); }
+.qmodal__p {
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+  padding: 0 1.4rem 1rem; border-bottom: 1px solid var(--hair, #e8e5df);
+  font-variant-numeric: tabular-nums;
+}
+.qmodal__p b { font-size: 1.15rem; font-weight: 800; }
+.qmodal__p s { color: var(--ink-3); font-size: .92rem; }
+.qmodal__p em {
+  font-style: normal; background: var(--accent-soft); color: var(--accent-deep);
+  border: 1px solid var(--accent-line); font-size: .72rem; font-weight: 700;
+  padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase;
+}
+.qrow { padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--hair, #e8e5df); }
+.qrow__l { display: flex; align-items: baseline; gap: .6rem; margin-bottom: .6rem; }
+.qrow__l b { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.qrow__l span { font-size: .82rem; color: var(--ink-3); }
+.qsz { display: flex; gap: .45rem; flex-wrap: wrap; }
+.qsz button {
+  min-height: 44px; padding: .6rem 1.05rem;
+  border: 1.5px solid var(--hair, #e8e5df); background: #fff; color: var(--ink);
+  font-family: inherit; font-size: .88rem; font-weight: 600;
+  border-radius: var(--r); cursor: pointer; transition: .18s;
+}
+.qsz button:hover { border-color: var(--ink-3); }
+.qsz button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: #fff; }
+.qmodal__f { padding: 1.2rem 1.4rem; }
+
+/* ── Menú lateral con imágenes ── */
+.drawer__img {
+  display: flex; align-items: center; gap: .9rem;
+  padding: .7rem 1.2rem; min-height: 66px;
+  text-decoration: none; color: var(--ink);
+  border-bottom: 1px solid var(--hair, #e8e5df);
+}
+.drawer__img:active { background: var(--paper, #f8f6f1); }
+.drawer__img img {
+  width: 48px; height: 48px; flex-shrink: 0; object-fit: cover;
+  border-radius: 6px; background: var(--paper, #f8f6f1);
+}
+.drawer__img div { flex: 1; min-width: 0; }
+.drawer__img b { display: block; font-size: .95rem; font-weight: 700; letter-spacing: .02em; }
+.drawer__img small { color: var(--ink-3); font-size: .8rem; }
+.drawer__img svg { width: 17px; height: 17px; flex-shrink: 0; stroke: var(--ink-3); fill: none; stroke-width: 1.8; }
+
 </style>
 
 <div class="ctl">
@@ -464,11 +682,7 @@ body.locked { overflow: hidden; }
   </div>
 </div>
 
-<div class="topbar">
-  <span><b>Envío gratis</b> en compras desde $600</span>
-  <span>Entrega en <b>2–4 días</b></span>
-  <span><b>30 días</b> para devolver</span>
-</div>
+<div class="ticker"><div class="ticker__track"><span><b>Envío gratis</b> desde $600</span><span>Entrega en <b>2–4 días hábiles</b></span><span><b>30 días</b> de garantía</span><span>Hasta <b>12 meses sin intereses</b></span><span><span class="stars">★★★★★</span> <b>+10,000</b> clientes</span><span>Oro laminado <b>18k</b> sobre acero inoxidable</span><span><b>Envío gratis</b> desde $600</span><span>Entrega en <b>2–4 días hábiles</b></span><span><b>30 días</b> de garantía</span><span>Hasta <b>12 meses sin intereses</b></span><span><span class="stars">★★★★★</span> <b>+10,000</b> clientes</span><span>Oro laminado <b>18k</b> sobre acero inoxidable</span></div></div>
 
 <header class="hdr">
   <div class="wrap hdr__in">
@@ -487,23 +701,25 @@ body.locked { overflow: hidden; }
     </div>
   </div>
 </header>
+<div class="catbar"><div class="wrap"><nav class="catbar__sc" aria-label="Categorías"><a href="#" aria-current="page">Inicio</a><a href="#">Todas las cadenas</a><a href="#">Pulsos</a><a href="#">Dijes</a><a href="#">Paquetes</a><a href="#">Kit 3 en 1</a><a href="#">Plata</a><a href="#">Cadenas gruesas</a><a href="#">Van Cleef</a><a href="#">Personalizados</a><a href="#">Relojes</a><a href="#">Más vendidos</a></nav></div></div>
 
 <!-- ═════════════ HOME ═════════════ -->
 <main class="page on" id="home">
   <section class="hero">
     <div class="wrap hero__in">
       <div>
-        <span class="eyebrow">Oro laminado · Baño 18k</span>
+        <span class="proof"><span class="proof__dot"></span><span><b class="cnum" data-count="127">0</b> personas compraron esta semana</span></span>
+        <span class="eyebrow" style="display:block">Oro laminado · Baño 18k</span>
         <h1>El oro que <span>sí dura</span></h1>
         <p class="hero__lead">Cadenas, pulsos y dijes con baño de oro de 18 quilates sobre acero inoxidable. No se destiñen, no manchan la piel.</p>
         <div class="hero__cta">
           <a class="btn" href="#">Ver catálogo</a>
-          <a class="btn btn--out" href="#">Paquetes desde $899</a>
+          <a class="btn btn--ghost" href="#">o ver paquetes desde $899</a>
         </div>
         <div class="hero__proof">
-          <div><b class="num">+10,000</b><span>Clientes</span></div>
-          <div><b class="num">4.8</b><span>De calificación</span></div>
-          <div><b class="num">30</b><span>Días de garantía</span></div>
+          <div><b class="num">+<span class="cnum" data-count="10000">0</span></b><span>Clientes</span></div>
+          <div><b class="num cnum" data-count="4.8">0</b><span>De calificación</span></div>
+          <div><b class="num cnum" data-count="30">0</b><span>Días de garantía</span></div>
         </div>
       </div>
       <div class="hero__img">
@@ -530,19 +746,19 @@ body.locked { overflow: hidden; }
       </div>
       <a class="shead__link" href="#">Ver las 30 cadenas →</a>
     </div>
-    <div class="grid">
-      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier pulso y cadena" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (14)</span></div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div><div class="card__sz">Ahorras $101</div></a>
+    <div class="grid rv-s">
+      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier pulso y cadena" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (14)</span></div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div><div class="card__sz">Ahorras $101</div></a>
     </div>
   </section>
 
   <section class="wrap rv" style="padding-top:0">
     <div class="shead"><div><span class="eyebrow">Categorías</span><h2>Encuentra tu pieza</h2></div></div>
-    <div class="cats">
+    <div class="cats rv-s">
       <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/653F6B2A-4C09-4A19-8130-3BC27DD405F9.webp?width=800" alt="Cadenas" loading="lazy"><div class="cat__l"><h3>Cadenas</h3><span class="num">30 piezas · desde $599</span></div></a>
       <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=800" alt="Pulsos" loading="lazy"><div class="cat__l"><h3>Pulsos</h3><span class="num">32 piezas · desde $499</span></div></a>
       <a class="cat" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=800" alt="Dijes" loading="lazy"><div class="cat__l"><h3>Dijes</h3><span class="num">15 piezas · desde $699</span></div></a>
@@ -572,7 +788,7 @@ body.locked { overflow: hidden; }
       <div><span class="eyebrow">+10,000 clientes</span><h2>Lo que dicen</h2></div>
       <a class="shead__link" href="#">Ver todas las reseñas →</a>
     </div>
-    <div class="revs">
+    <div class="revs rv-s">
       <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Ya llevo 8 meses usándola diario, me baño con ella y no se le ha caído el color. Vale cada peso.</p><div class="rev__a"><b>Carlos M.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
       <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Llegó en 3 días y el estuche está bien padre para regalo. Se la di a mi hermano y quedó encantado.</p><div class="rev__a"><b>Luis G.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
       <div class="rev"><div class="rev__s">★★★★★</div><p class="rev__t">Compré el paquete de cadena y pulso. Se ve igual que el oro de verdad y no me irrita la piel.</p><div class="rev__a"><b>Memo R.</b> · <span class="rev__v">✓ Compra verificada</span></div></div>
@@ -599,6 +815,13 @@ body.locked { overflow: hidden; }
       <div class="pdp__r"><i>★★★★★</i> <span class="num">4.9</span> · <a href="#">25 reseñas verificadas</a></div>
       <div class="pdp__pr"><b class="num">$699</b><s class="num">$800</s><em>Ahorras $101</em></div>
       <p class="pdp__tax">Precio en MXN, impuestos incluidos.</p>
+        <div class="stock" style="--stock-pct:22%">
+          <span>Quedan <b>3 piezas</b> en 50 cm</span>
+          <span class="stock__bar"><span class="stock__fill"></span></span>
+        </div>
+        <div class="anchor">
+          <span>Con el paquete pulso + cadena:</span><b>ahorras $200</b><s class="num">$1,099</s><span class="num">$899</span>
+        </div>
 
       <div class="olab"><span>Largo</span><span>Guía de tallas</span></div>
       <div class="opts" id="sizes">
@@ -609,12 +832,16 @@ body.locked { overflow: hidden; }
 
       <div class="buy">
         <button class="btn btn--w">Agregar a la bolsa · <span class="num">$699</span></button>
-        <button class="btn btn--out btn--w">Comprar ahora</button>
+        <button class="btn btn--ghost btn--w">Comprar ahora</button>
       </div>
 
       <div class="msi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6"><path d="M4 7h16v11H4z"/><path d="M4 11h16"/></svg><span>Hasta <b>12 meses sin intereses</b> con Mercado Pago. También sin tarjeta de crédito.</span></div>
 
-      <div class="pdpt">
+      <div class="ship" style="--ship-pct:100%">
+          <div class="ship__t"><span>Envío gratis desbloqueado</span><b>✓ $699 de $600</b></div>
+          <div class="ship__bar"><span class="ship__fill"></span></div>
+        </div>
+        <div class="pdpt">
         <div><svg viewBox="0 0 24 24"><path d="M3 8h13v9H3z"/><path d="M16 11h4l1 3v3h-5z"/></svg><div><b>Envío gratis</b>Entrega en 2–4 días</div></div>
         <div><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6z"/></svg><div><b>30 días</b>Para devolver</div></div>
         <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><b>Hipoalergénico</b>No mancha la piel</div></div>
@@ -647,10 +874,10 @@ body.locked { overflow: hidden; }
 
   <section class="wrap rv" style="padding-top:0">
     <div class="shead"><div><span class="eyebrow">Completa el look</span><h2>Va bien con</h2></div></div>
-    <div class="grid">
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/49BC6636-08E6-4B47-B795-C9739FA7F875.jpg?width=700" alt="Dije Cruz Corona" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije Cruz Corona</div><div class="card__p"><b class="num">$699</b></div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=700" alt="Dije San Judas" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije San Judas Adiamantado</div><div class="card__p"><b class="num">$699</b></div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div></a>
+    <div class="grid rv-s">
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/49BC6636-08E6-4B47-B795-C9739FA7F875.jpg?width=700" alt="Dije Cruz Corona" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Dije Cruz Corona</div><div class="card__p"><b class="num">$699</b></div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=700" alt="Dije San Judas" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Dije San Judas Adiamantado</div><div class="card__p"><b class="num">$699</b></div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−10%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/el-rey-joyero-cadena-pulsera-oro.jpg?width=700" alt="Paquete Cartier" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Paquete Cartier Pulso y Cadena</div><div class="card__p"><b class="num">$899</b><s class="num">$1,000</s></div></a>
     </div>
   </section>
 </main>
@@ -673,16 +900,16 @@ body.locked { overflow: hidden; }
     <div class="chips"><button class="chip">Más vendidas ▾</button></div>
   </div>
   <section class="wrap" style="padding-top:2rem">
-    <div class="grid">
-      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/45D11F02-8D16-40E0-BACA-D80A3013F527.jpg?width=700" alt="Cadena Torzal Gruesa" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Torzal Gruesa</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.7 (15)</span></div><div class="card__p"><b class="num">$750</b></div><div class="card__sz">60 · 80 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/406321CD-4697-4E03-BD94-BE7C043B075C.jpg?width=700" alt="Cadena Mónaco Cubana" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Cubana</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (9)</span></div><div class="card__p"><b class="num">$1,200</b></div><div class="card__sz">50 · 60 cm</div></a>
-      <a class="card" href="#"><div class="card__m"><span class="tag">−20%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/3F5D5C6D-4557-4766-8427-CFD34D2E7B36.jpg?width=700" alt="Cadena Mónaco Delgada" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Delgada</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (11)</span></div><div class="card__p"><b class="num">$799</b><s class="num">$1,000</s></div><div class="card__sz">Talla única</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
-      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=700" alt="Dije Baraja Rey" loading="lazy"><button class="qa">Agregar rápido</button></div><div class="card__t">Dije Baraja Rey</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (7)</span></div><div class="card__p"><b class="num">$799</b></div><div class="card__sz">Talla única</div></a>
+    <div class="grid rv-s">
+      <a class="card" href="#"><div class="card__m"><span class="tag">−13%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=700" alt="Cadena Cartier" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Cartier</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (25)</span></div><div class="card__p"><b class="num">$699</b><s class="num">$800</s></div><div class="card__sz">50 · 60 · 70 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−33%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/C9756FBF-C5F1-4096-B9B8-96906DFC6FCD.jpg?width=700" alt="Cadena Barbada" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Barbada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (41)</span></div><div class="card__p"><b class="num">$599</b><s class="num">$900</s></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/5F55815F-888E-435C-B5A0-6160C0C5223F.jpg?width=700" alt="Cadena Torzal Delgada" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Torzal Delgada</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (33)</span></div><div class="card__p"><b class="num">$599</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/45D11F02-8D16-40E0-BACA-D80A3013F527.jpg?width=700" alt="Cadena Torzal Gruesa" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Torzal Gruesa</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.7 (15)</span></div><div class="card__p"><b class="num">$750</b></div><div class="card__sz">60 · 80 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag tag--new">Nuevo</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/4ADF0103-4481-4130-A73F-B8E299BCA229.jpg?width=700" alt="Cadena Tejido Bizantino" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Tejido Bizantino</div><div class="card__r"><i>★★★★★</i> <span class="num">5.0 (18)</span></div><div class="card__p"><b class="num">$899</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/406321CD-4697-4E03-BD94-BE7C043B075C.jpg?width=700" alt="Cadena Mónaco Cubana" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Mónaco Cubana</div><div class="card__r"><i>★★★★★</i> <span class="num">4.9 (9)</span></div><div class="card__p"><b class="num">$1,200</b></div><div class="card__sz">50 · 60 cm</div></a>
+      <a class="card" href="#"><div class="card__m"><span class="tag">−20%</span><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/3F5D5C6D-4557-4766-8427-CFD34D2E7B36.jpg?width=700" alt="Cadena Mónaco Delgada" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Mónaco Delgada</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (11)</span></div><div class="card__p"><b class="num">$799</b><s class="num">$1,000</s></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=700" alt="Cadena Mónaco Chain" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Cadena Mónaco Chain</div><div class="card__r"><i>★★★★☆</i> <span class="num">4.6 (12)</span></div><div class="card__p"><b class="num">$1,800</b></div><div class="card__sz">Talla única</div></a>
+      <a class="card" href="#"><div class="card__m"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=700" alt="Dije Baraja Rey" loading="lazy"><button class="qadd">Agregar al carrito</button></div><div class="card__t">Dije Baraja Rey</div><div class="card__r"><i>★★★★★</i> <span class="num">4.8 (7)</span></div><div class="card__p"><b class="num">$799</b></div><div class="card__sz">Talla única</div></a>
     </div>
   </section>
 </main>
@@ -695,28 +922,7 @@ body.locked { overflow: hidden; }
     <button class="icobtn" id="dclose" aria-label="Cerrar menú"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <div class="drawer__b">
-    <div class="drawer__g">Oro laminado y baño 18k</div>
-    <div class="drawer__s">
-      <a href="#">Cadenas <span class="num">30</span></a>
-      <a href="#">Pulsos <span class="num">32</span></a>
-      <a href="#">Dijes <span class="num">15</span></a>
-      <a href="#">Cadenas gruesas <span class="num">5</span></a>
-      <a href="#">Van Cleef <span class="num">14</span></a>
-      <a href="#">Paquetes pulso y cadena <span class="num">10</span></a>
-    </div>
-    <div class="drawer__g">Plata</div>
-    <div class="drawer__s">
-      <a href="#">Cadenas de plata <span class="num">7</span></a>
-      <a href="#">Pulsos de plata <span class="num">6</span></a>
-    </div>
-    <div class="drawer__g">Paquetes</div>
-    <div class="drawer__s">
-      <a href="#">Paquetes cadena y dije <span class="num">17</span></a>
-      <a href="#">Kit 3 en 1 <span class="num">7</span></a>
-    </div>
-    <a class="drawer__l" href="#">Personalizados</a>
-    <a class="drawer__l" href="#">Relojes</a>
-    <a class="drawer__l" href="#">Más vendidos</a>
+    <a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/653F6B2A-4C09-4A19-8130-3BC27DD405F9.webp?width=120" alt="Oro laminado y Baño 18k" loading="lazy"><div><b>Oro laminado y Baño 18k</b><small>66 piezas</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Professional_commercial_jewelry_product_photograph-1772212821976.png?width=120" alt="Plata .925" loading="lazy"><div><b>Plata .925</b><small>13 piezas</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/AD998A0C-3B6D-4622-9F5C-CF610F804339.jpg?width=120" alt="Paquetes y Kits" loading="lazy"><div><b>Paquetes y Kits</b><small>27 sets</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/58685E19-58E4-4564-9C77-A98BE4E04E7A.jpg?width=120" alt="Dijes" loading="lazy"><div><b>Dijes</b><small>15 piezas</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/Gemini_Generated_Image_gkvle1gkvle1gkvl_2b19dfda-9450-4fac-bbfe-1f5bc344ad6d.png?width=120" alt="Pulsos" loading="lazy"><div><b>Pulsos</b><small>32 piezas</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/261279D6-0007-44A8-A18D-AA5F5CB3B5DA.jpg?width=120" alt="Personalizados" loading="lazy"><div><b>Personalizados</b><small>A tu medida</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/EC6FA291-3B37-45DA-81EA-D596D4E9AF14.jpg?width=120" alt="Relojes" loading="lazy"><div><b>Relojes</b><small>4 modelos</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__img" href="#"><img src="https://cdn.shopify.com/s/files/1/0660/6061/5835/files/39AE4B99-3233-487E-8B8F-29FCC4B024BE_24f9b203-83a8-4f01-9add-fb87cda5733b.jpg?width=120" alt="Más vendidos" loading="lazy"><div><b>Más vendidos</b><small>20 piezas</small></div><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></a><a class="drawer__l" href="#">Nosotros</a>
     <a class="drawer__l" href="#">Nosotros</a>
     <a class="drawer__l" href="#">Contáctanos</a>
   </div>
@@ -724,6 +930,39 @@ body.locked { overflow: hidden; }
     <a href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/></svg> WhatsApp 33 1151 2137</a>
   </div>
 </nav>
+
+
+<div class="qmodal" id="qmodal" role="dialog" aria-modal="true" aria-labelledby="qmTitle" hidden>
+  <div class="qmodal__c">
+    <div class="qmodal__h">
+      <h3 id="qmTitle">Paquete Cartier Pulso y Cadena</h3>
+      <button class="qmodal__x" id="qmClose" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="qmodal__p">
+      <b class="num" id="qmPrice">$899</b>
+      <s class="num" id="qmComp">$1,000</s>
+      <em id="qmOff">10% de descuento</em>
+    </div>
+    <div class="qrow" id="qmRow1">
+      <div class="qrow__l"><b>Cadena</b><span id="qmSel1">50 cm</span></div>
+      <div class="qsz" data-group="1">
+        <button aria-pressed="true">50 cm</button>
+        <button aria-pressed="false">60 cm</button>
+        <button aria-pressed="false">70 cm</button>
+      </div>
+    </div>
+    <div class="qrow" id="qmRow2">
+      <div class="qrow__l"><b>Pulso</b><span id="qmSel2">19 cm</span></div>
+      <div class="qsz" data-group="2">
+        <button aria-pressed="true">19 cm</button>
+        <button aria-pressed="false">21 cm</button>
+      </div>
+    </div>
+    <div class="qmodal__f">
+      <button class="btn btn--w">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap fg">
@@ -787,7 +1026,7 @@ document.querySelectorAll('#pages button').forEach(b => b.addEventListener('clic
   document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
   document.getElementById(b.dataset.p).classList.add('on');
   scrollTo({top:0, behavior:'smooth'});
-  requestAnimationFrame(revelar);
+  requestAnimationFrame(() => { revelar(); if (window.armarBarras) window.armarBarras(); });
 }));
 
 // ── Grupos de botones ──
@@ -837,4 +1076,135 @@ revelar();
 
 document.querySelectorAll('a[href="#"]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
 document.querySelectorAll('.qa').forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); }));
+
+// ═══ NEUROMARKETING: barras y contadores al entrar en pantalla ═══
+(function() {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // barras de progreso (stock, envío gratis)
+  // Se re-arma al cambiar de página: los elementos de páginas ocultas
+  // (display:none) nunca intersectan, así que hay que observarlos al mostrarlas.
+  window.armarBarras = function() {
+    const barras = document.querySelectorAll('.stock:not(.in), .ship:not(.in)');
+    if (!barras.length) return;
+    if (!('IntersectionObserver' in window) || reduce) {
+      barras.forEach(b => b.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: .35 });
+    barras.forEach(b => io.observe(b));
+  };
+  window.armarBarras();
+
+  // contadores numéricos
+  const nums = document.querySelectorAll('[data-count]');
+  const animar = (el) => {
+    const fin = parseFloat(el.dataset.count);
+    const dec = (el.dataset.count.split('.')[1] || '').length;
+    if (reduce) { el.textContent = fin.toLocaleString('es-MX', {minimumFractionDigits:dec}); return; }
+    const t0 = performance.now(), dur = 1100;
+    const paso = (t) => {
+      const p = Math.min((t - t0) / dur, 1);
+      const val = fin * (1 - Math.pow(1 - p, 3));   // easeOutCubic
+      el.textContent = val.toLocaleString('es-MX', {
+        minimumFractionDigits: dec, maximumFractionDigits: dec
+      });
+      if (p < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  };
+  if (nums.length) {
+    if (!('IntersectionObserver' in window)) { nums.forEach(animar); }
+    else {
+      const io2 = new IntersectionObserver((es) => {
+        es.forEach(e => { if (e.isIntersecting) { animar(e.target); io2.unobserve(e.target); } });
+      }, { threshold: .5 });
+      nums.forEach(n => io2.observe(n));
+    }
+  }
+
+  // revelado escalonado
+  const st = document.querySelectorAll('.rv-s');
+  if (st.length) {
+    if (!('IntersectionObserver' in window) || reduce) { st.forEach(s => s.classList.add('in')); }
+    else {
+      const io3 = new IntersectionObserver((es) => {
+        es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io3.unobserve(e.target); } });
+      }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+      st.forEach(s => io3.observe(s));
+    }
+  }
+
+  // brillo del botón sigue al cursor
+  document.querySelectorAll('.btn').forEach(b => {
+    b.addEventListener('pointermove', (e) => {
+      const r = b.getBoundingClientRect();
+      b.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      b.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+})();
+
+
+// ═══ Quick add: panel flotante con selector de tallas ═══
+(function() {
+  const m = document.getElementById('qmodal');
+  if (!m) return;
+  const cerrar = () => {
+    m.classList.remove('open');
+    document.body.classList.remove('locked');
+    setTimeout(() => { m.hidden = true; }, 260);
+    if (ultimo) ultimo.focus();
+  };
+  let ultimo = null;
+
+  document.querySelectorAll('.qadd').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      ultimo = b;
+      const card = b.closest('.card');
+      if (card) {
+        const t = card.querySelector('.card__t');
+        const p = card.querySelector('.card__p b');
+        const s = card.querySelector('.card__p s');
+        const tag = card.querySelector('.tag');
+        if (t) document.getElementById('qmTitle').textContent = t.textContent.trim();
+        if (p) document.getElementById('qmPrice').textContent = p.textContent.trim();
+        const comp = document.getElementById('qmComp');
+        const off  = document.getElementById('qmOff');
+        if (s) { comp.textContent = s.textContent.trim(); comp.hidden = false; }
+        else comp.hidden = true;
+        if (tag && tag.textContent.includes('%')) {
+          off.textContent = tag.textContent.replace('−','') + ' de descuento'; off.hidden = false;
+        } else off.hidden = true;
+
+        // el segundo selector solo aplica a paquetes y kits
+        const nom = (t ? t.textContent : '').toLowerCase();
+        document.getElementById('qmRow2').hidden = !(nom.includes('paquete') || nom.includes('kit'));
+      }
+      m.hidden = false;
+      requestAnimationFrame(() => m.classList.add('open'));
+      document.body.classList.add('locked');
+      document.getElementById('qmClose').focus();
+    });
+  });
+
+  document.getElementById('qmClose').addEventListener('click', cerrar);
+  m.addEventListener('click', (e) => { if (e.target === m) cerrar(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && m.classList.contains('open')) cerrar(); });
+
+  m.querySelectorAll('.qsz').forEach(g => {
+    g.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true');
+        const lbl = document.getElementById('qmSel' + g.dataset.group);
+        if (lbl) lbl.textContent = b.textContent;
+      });
+    });
+  });
+})();
+
 </script>
