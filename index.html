@@ -485,6 +485,24 @@ body.locked { overflow: hidden; }
 .drawer__l { font-size: 1rem; letter-spacing: .06em; }
 .drawer__img b { font-size: 1.05rem; }
 
+
+/* ═══ CHIPS DE CATEGORÍA: recuadro de esquina suave, no cápsula ═══
+   Petición del cliente (captura del 26 AGO): rectángulo con orillas
+   redondeadas. El activo lleva fondo sólido; los demás van sin caja. */
+.chips-sc a {
+  border-radius: 6px !important;
+  border-color: transparent !important;
+  background: transparent;
+  padding: .45rem .85rem !important;
+}
+.chips-sc a:hover { background: var(--hueso); color: var(--tinta); }
+.chips-sc a[aria-current="page"] {
+  background: var(--negro); color: #fff; border-color: var(--negro) !important;
+}
+
+/* Los filtros de colección siguen el mismo criterio */
+.filtro { border-radius: 6px !important; }
+
 </style>
 
 <div class="ctl">
@@ -955,4 +973,48 @@ function armar(){
 })();
 revelar(); armar();
 document.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+
+// ═══════════════════════════════════════════════════════════════
+//  OPCIÓN EXTRA (desactivada) — Agregar directo al carrito
+//  El equipo pidió dejarlo comentado por si se quiere activar:
+//  en vez de abrir el panel de tallas, manda la variante por
+//  defecto directo al carrito.
+//
+//  Para activarlo: cambiar DIRECTO_AL_CARRITO a true.
+//  Nota: solo tiene sentido en productos de una sola variante.
+//  En cadenas y paquetes con talla, saltarse el selector obliga
+//  al cliente a corregir en el carrito y suele bajar conversión.
+// ═══════════════════════════════════════════════════════════════
+var DIRECTO_AL_CARRITO = false;
+
+/*
+(function () {
+  if (!DIRECTO_AL_CARRITO) return;
+  document.querySelectorAll('.qadd').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();   // impide que se abra el panel de tallas
+
+      var card = b.closest('.card');
+      var nombre = card ? card.querySelector('.card__t').textContent.trim() : '';
+
+      // Aquí iría la llamada real de Shopify:
+      // fetch(routes.cart_add_url + '.js', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ items: [{ id: VARIANT_ID, quantity: 1 }] })
+      // });
+
+      var txt = b.textContent;
+      b.textContent = '✓ Agregado';
+      b.style.background = 'var(--verde)';
+      setTimeout(function () {
+        b.textContent = txt;
+        b.style.background = '';
+      }, 1600);
+    }, true);   // fase de captura: corre antes del handler del panel
+  });
+})();
+*/
+
 </script>
